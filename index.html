@@ -161,7 +161,7 @@
 
     nav ul {
       display: flex;
-      gap: 0;
+      gap: 0.25rem;
       list-style: none;
     }
 
@@ -173,7 +173,7 @@
       text-transform: uppercase;
       color: var(--ink-3);
       text-decoration: none;
-      padding: 0.9em 1.1em;
+      padding: 0.9em 0.9em;
       border-bottom: 2px solid transparent;
       transition: color 0.2s, border-color 0.2s;
     }
@@ -571,7 +571,6 @@
   <ul>
     <li><a href="#abstract">Abstract</a></li>
     <li><a href="#method">Method</a></li>
-    <li><a href="#complexity">Complexity</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#citation">Citation</a></li>
   </ul>
@@ -620,9 +619,7 @@
       where each $\mathbf{D}(\tilde{\boldsymbol{\lambda}}, \boldsymbol{\lambda})$ is a <em>Cauchy factor</em>, a structured orthogonal matrix arising from a rank-one update of the Laplacian corresponding to one bridge edge. Each Cauchy factor is localized to the subgraphs it connects.
     </p>
 
-      <!-- Complexity -->
-    <section id="complexity">
-    <h2>Complexity</h2>
+    <h3>Complexity</h3>
     <p>
       We provide an efficient algorithm for computing the Cauchy factorization. Obtaining all Cauchy factors has <strong>quadratic complexity in the number of nodes</strong>, scaled by the maximum cut size between subgraphs $k$, reducing exact GFT-based operators from $O(n^3)$ to $O(kn^2)$.
     </p>
