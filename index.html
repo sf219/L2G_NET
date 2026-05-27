@@ -74,7 +74,7 @@
     }
 
     h1 {
-      font-family: var(--display);
+      font-family: var(--serif);
       font-weight: 400;
       font-size: clamp(1.9rem, 4.5vw, 3rem);
       line-height: 1.2;
@@ -84,8 +84,7 @@
       letter-spacing: -0.01em;
     }
 
-    h1 em {
-      font-style: italic;
+    .title-accent {
       color: var(--accent);
     }
 
@@ -104,9 +103,9 @@
     .authors a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 
     .affiliation {
-      font-size: 1.02rem;
+      font-size: 1.16rem;
       color: var(--ink-3);
-      font-style: italic;
+      font-style: normal;
       margin-bottom: 2.5rem;
     }
 
@@ -239,7 +238,7 @@
 
     figcaption {
       font-family: var(--serif);
-      font-size: 0.98rem;
+      font-size: 1.12rem;
       color: var(--ink-3);
       font-style: normal;
       margin-top: 0.75rem;
@@ -250,7 +249,7 @@
     figcaption strong {
       font-style: normal;
       font-family: var(--serif);
-      font-size: 0.98rem;
+      font-size: 1.12rem;
       color: var(--ink-2);
     }
 
@@ -456,7 +455,7 @@
   </div>
 
   <h1 class="fade-up">
-    L2G-Net: <em>Local to Global</em> Spectral Graph Neural Networks
+    L2G-Net: <span class="title-accent">Local to Global</span> Spectral Graph Neural Networks
     via Cauchy Factorizations
   </h1>
 
@@ -521,7 +520,7 @@
     <figure>
       <img src="static/images/figure1.png" alt="L2G-Net hierarchical factorization and spectral processing pipeline" />
       <figcaption>
-        <strong>Figure 1.</strong> <em>(a)</em> A hierarchical graph with bridge edges shown in different colors. The global GFT decomposes as the product of subgraph GFTs and a sequence of Cauchy factors. <em>(b)</em> L2G-Net first computes base GFTs of small subgraphs and applies local spectral filters, then mixes outputs via Cauchy factors. A global spectral filter acts on the full graph representation at the last level.
+        <strong>Figure 1.</strong> (a) A hierarchical graph with bridge edges shown in different colors. The global GFT decomposes as the product of subgraph GFTs and a sequence of Cauchy factors. (b) L2G-Net first computes base GFTs of small subgraphs and applies local spectral filters, then mixes outputs via Cauchy factors. A global spectral filter acts on the full graph representation at the last level.
       </figcaption>
     </figure>
 
@@ -538,7 +537,7 @@
 
     <h3>Architecture</h3>
     <p>
-      L2G-Net inserts learnable spectral filters between Cauchy factors at every level of the hierarchy. Local filters capture subgraph-level spectral patterns; global filters model interactions across the full graph. The architecture is determined entirely by the graph topology — no positional encodings or graph rewiring required.
+      L2G-Net inserts learnable spectral filters between Cauchy factors at every level of the hierarchy. Local filters capture subgraph-level spectral patterns; global filters model interactions across the full graph. The architecture is determined entirely by the graph topology, with no positional encodings or graph rewiring required.
     </p>
 
     <figure>
@@ -589,7 +588,7 @@
     </div>
 
     <p>
-      The complexity scales with the subgraph cut size $k$, not the total edge count. For graphs with hierarchical structure (common in real-world networks), this yields significant savings. When $k = O(1)$, the factorization complexity is $O(n^2)$ — a full order of magnitude cheaper than dense eigendecomposition.
+      The complexity scales with the subgraph cut size $k$, not the total edge count. For graphs with hierarchical structure (common in real-world networks), this yields significant savings. When $k = O(1)$, the factorization complexity is $O(n^2)$, a full order of magnitude cheaper than dense eigendecomposition.
     </p>
 
     <h3>Runtime on Synthetic Graphs</h3>
@@ -631,7 +630,7 @@
         </tbody>
       </table>
     </div>
-    <p style="font-size:0.82rem; color: var(--ink-3); font-style:italic;">Accuracy (↑) for Roman-Empire and Amazon-Ratings; AUC (↑) for Minesweeper and Tolokers.</p>
+    <p style="font-size:0.82rem; color: var(--ink-3); font-style:normal;">Accuracy (↑) for Roman-Empire and Amazon-Ratings; AUC (↑) for Minesweeper and Tolokers.</p>
 
     <h3>City-Scale Graphs</h3>
     <p>
