@@ -218,8 +218,42 @@
     .abstract-box {
       background: var(--cream);
       border-left: 3px solid var(--accent);
-      padding: 1.75rem 2rem;
+      padding: 1.25rem 1.75rem;
       border-radius: 0 2px 2px 0;
+    }
+
+    .abstract-box summary {
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.5rem 0;
+    }
+
+    .abstract-box summary::-webkit-details-marker { display: none; }
+
+    .abstract-box summary::after {
+      content: 'Expand';
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--ink-3);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .abstract-box[open] summary::after {
+      content: 'Collapse';
+    }
+
+    .abstract-body {
+      padding-top: 0.5rem;
     }
 
     /* ─── Figures ─────────────────────────────────────── */
@@ -460,9 +494,9 @@
   </h1>
 
   <p class="authors fade-up">
-    <a href="#">Samuel Fernández-Menduiña</a>&ensp;&middot;&ensp;
-    <a href="#">Eduardo Pavez</a>&ensp;&middot;&ensp;
-    <a href="#">Antonio Ortega</a>
+    <a href="https://sf219.github.io" target="_blank">Samuel Fernández-Menduiña</a>&ensp;&middot;&ensp;
+    <a href="https://epavez.github.io" target="_blank">Eduardo Pavez</a>&ensp;&middot;&ensp;
+    <a href="https://sites.google.com/usc.edu/stac-lab/home" target="_blank">Antonio Ortega</a>
   </p>
   <p class="affiliation fade-up">University of Southern California</p>
 
@@ -500,21 +534,24 @@
   <!-- Abstract -->
   <section id="abstract">
     <h2>Abstract</h2>
-    <div class="abstract-box">
-      <p>
-        Despite their theoretical advantages, spectral methods based on the graph Fourier transform (GFT) are seldom used in graph neural networks due to the cost of computing the eigenbasis and the lack of vertex-domain locality in the resulting representations. As a result, most GNNs rely on local approximations such as polynomial Laplacian filters or message passing, which limit their ability to model long-range dependencies.
-      </p>
-      <p>
-        We introduce an <strong>exact factorization of the GFT into operators acting on subgraphs</strong>, combined via a sequence of Cauchy matrices. Building on this factorization, we propose <strong>L2G-Net</strong> (Local to Global Net): a new class of spectral GNNs that operates by processing the spectral representations of subgraphs and combining them via structured matrices, avoiding full eigendecompositions with <strong>$O(kn^2)$ complexity</strong>. Experiments on large graphs show that L2G-Net scales to regimes out of reach for the standard GFT, and is competitive with state-of-the-art methods with orders of magnitude fewer learnable parameters.
-      </p>
-    </div>
+    <details class="abstract-box">
+      <summary>Abstract</summary>
+      <div class="abstract-body">
+        <p>
+          Despite their theoretical advantages, spectral methods based on the graph Fourier transform (GFT) are seldom used in graph neural networks due to the cost of computing the eigenbasis and the lack of vertex-domain locality in the resulting representations. As a result, most GNNs rely on local approximations such as polynomial Laplacian filters or message passing, which limit their ability to model long-range dependencies.
+        </p>
+        <p>
+          We introduce an <strong>exact factorization of the GFT into operators acting on subgraphs</strong>, combined via a sequence of Cauchy matrices. Building on this factorization, we propose <strong>L2G-Net</strong> (Local to Global Net): a new class of spectral GNNs that operates by processing the spectral representations of subgraphs and combining them via structured matrices, avoiding full eigendecompositions with <strong>$O(kn^2)$ complexity</strong>. Experiments on large graphs show that L2G-Net scales to regimes out of reach for the standard GFT, and is competitive with state-of-the-art methods with orders of magnitude fewer learnable parameters.
+        </p>
+      </div>
+    </details>
   </section>
 
   <!-- Method -->
   <section id="method">
     <h2>Method</h2>
     <p>
-      L2G-Net is built on a key theoretical insight: the GFT of any graph in a hierarchical graph family admits an <em>exact</em> Cauchy factorization. Given a graph partition, the global GFT decomposes as a product of local subgraph GFTs and a chain of Cauchy matrices, one per bridge edge connecting subgraphs.
+    The GFT of any graph admits an <em>exact</em> Cauchy factorization. Given a graph partition, the global GFT decomposes as a product of local subgraph GFTs and a chain of Cauchy matrices, one per bridge edge connecting subgraphs.
     </p>
 
     <figure>
