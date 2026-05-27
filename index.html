@@ -630,9 +630,9 @@
       </figcaption>
     </figure>
 
-    <h3>Key Theorem: Cauchy Factorization</h3>
+    <h3>Cauchy Factorization</h3>
     <p>
-      For any graph $G \in \mathcal{F}(L, \{G_i\}_{i=1}^m, k)$ with Laplacian $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$, and $\mathbf{U}_0$ the block-diagonal matrix of subgraph eigenvectors:
+      For any graph with Laplacian $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$, with at most $k$ bridge edges between subgraphs, and $\mathbf{U}_0$ the block-diagonal matrix of subgraph eigenvectors:
     </p>
     <p style="text-align:center; padding: 0.5rem 0;">
       $$\mathbf{U}^\top = \mathbf{D}(\boldsymbol{\lambda}, \tilde{\boldsymbol{\lambda}}_{K-1}) \cdots \mathbf{D}(\tilde{\boldsymbol{\lambda}}_1, \tilde{\boldsymbol{\lambda}}_0)\, \mathbf{U}_0^\top$$
@@ -671,7 +671,7 @@
     </figure>
 
     <p>
-      L2G-Net achieves an intermediate computational profile, more expressive than local methods, and cheaper than full spectral methods.
+      L2G-Net achieves an intermediate computational profile: more expressive than local methods, and cheaper than the GFT.
     </p>
 
     <div class="method-grid">
@@ -782,7 +782,7 @@
     <figure>
       <img src="static/images/figure5.png" alt="Performance vs number of learnable parameters" />
       <figcaption>
-        <strong>Figure 5.</strong> Performance vs. number of learnable parameters across four heterophilous benchmarks. L2G-Net achieves competitive or superior accuracy with orders of magnitude fewer parameters than transformer-based baselines, and consistently outperforms the Global GFT.
+        <strong>Figure 5.</strong> Performance vs number of learnable parameters across four heterophilous benchmarks. L2G-Net achieves competitive or superior accuracy with orders of magnitude fewer parameters than transformer-based baselines, and consistently outperforms the Global GFT.
       </figcaption>
     </figure>
   </section>
