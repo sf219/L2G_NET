@@ -112,7 +112,7 @@
     /* ─── Action Buttons ──────────────────────────────── */
     .buttons {
       display: flex;
-      gap: 0.75rem;
+      gap: 0.5rem;
       justify-content: center;
       flex-wrap: wrap;
     }
@@ -341,6 +341,60 @@
       font-size: 0.7em;
     }
 
+    /* ─── Complexity callout ──────────────────────────── */
+    .complexity-callout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 2rem 0;
+    }
+
+    .complexity-callout .stat {
+      background: var(--paper);
+      padding: 1.5rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .complexity-callout .stat.highlight {
+      background: var(--accent-light);
+    }
+
+    .complexity-callout .stat-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+    }
+
+    .complexity-callout .stat-value {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+
+    .complexity-callout .stat.highlight .stat-value {
+      color: var(--accent);
+    }
+
+    .complexity-callout .stat-note {
+      font-family: var(--serif);
+      font-size: 0.88rem;
+      color: var(--ink-3);
+      line-height: 1.4;
+    }
+
+    @media (max-width: 540px) {
+      .complexity-callout { grid-template-columns: 1fr; }
+    }
+
     /* ─── Contributions ───────────────────────────────── */
     .contribution-list {
       list-style: none;
@@ -502,17 +556,12 @@
 
   <div class="buttons fade-up">
     <a class="btn btn-primary" href="https://arxiv.org/abs/2602.18837" target="_blank">
-      <!-- paper icon -->
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       Paper
     </a>
     <a class="btn btn-secondary" href="https://github.com/sf219/L2G_NET" target="_blank">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
       Code
-    </a>
-    <a class="btn btn-secondary" href="#citation">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"/></svg>
-      Cite
     </a>
   </div>
 </header>
@@ -522,8 +571,8 @@
   <ul>
     <li><a href="#abstract">Abstract</a></li>
     <li><a href="#method">Method</a></li>
-    <li><a href="#results">Results</a></li>
     <li><a href="#complexity">Complexity</a></li>
+    <li><a href="#results">Results</a></li>
     <li><a href="#citation">Citation</a></li>
   </ul>
 </nav>
@@ -571,6 +620,25 @@
       where each $\mathbf{D}(\tilde{\boldsymbol{\lambda}}, \boldsymbol{\lambda})$ is a <em>Cauchy factor</em>, a structured orthogonal matrix arising from a rank-one update of the Laplacian corresponding to one bridge edge. Each Cauchy factor is localized to the subgraphs it connects.
     </p>
 
+      <!-- Complexity -->
+    <section id="complexity">
+    <h2>Complexity</h2>
+    <p>
+      We provide an efficient algorithm for computing the Cauchy factorization. Obtaining all Cauchy factors has <strong>quadratic complexity in the number of nodes</strong>, scaled by the maximum cut size between subgraphs $k$, reducing exact GFT-based operators from $O(n^3)$ to $O(kn^2)$.
+    </p>
+
+    <div class="complexity-callout">
+      <div class="stat highlight">
+        <span class="stat-label">Cauchy factorization</span>
+        <span class="stat-value">$O(kn^2)$</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Dense eigendecomposition</span>
+        <span class="stat-value">$O(n^3)$</span>
+      </div>
+    </div>
+
+
     <h3>Architecture</h3>
     <p>
       L2G-Net inserts learnable spectral filters between Cauchy factors at every level of the hierarchy. Local filters capture subgraph-level spectral patterns; global filters model interactions across the full graph. The architecture is determined entirely by the graph topology, with no positional encodings or graph rewiring required.
@@ -582,11 +650,7 @@
         <strong>Figure 2.</strong> Average energy versus hop distance from the source for a unit impulse. ChebNet has a hard cutoff at $K$ hops; a GFT-based GNN propagates energy globally. L2G-Net's locality bias adapts to the graph structure, interpolating between the two extremes.
       </figcaption>
     </figure>
-  </section>
 
-  <!-- Complexity -->
-  <section id="complexity">
-    <h2>Complexity Comparison</h2>
     <p>
       L2G-Net achieves a strictly intermediate computational profile, more expressive than local methods, and dramatically cheaper than full spectral methods.
     </p>
@@ -622,23 +686,19 @@
       <div class="cell ours-cell">Local → Global</div>
       <div class="cell ours-cell">Subgraph</div>
     </div>
-
-    <p>
-      The complexity scales with the subgraph cut size $k$, not the total edge count. For graphs with hierarchical structure (common in real-world networks), this yields significant savings. When $k = O(1)$, the factorization complexity is $O(n^2)$, a full order of magnitude cheaper than dense eigendecomposition.
-    </p>
-
-    <h3>Runtime on Synthetic Graphs</h3>
-    <figure>
-      <img src="static/images/figure3.png" alt="Runtime scaling: Cauchy factorization vs eigendecomposition" />
-      <figcaption>
-        <strong>Figure 3.</strong> Runtime vs. graph size (left) and cut size (right). The Cauchy factorization scales quadratically with $n$ and linearly with $k$, consistent with $O(kn^2)$ theory. Full eigendecomposition becomes impractical beyond $n \approx 10^4$; the Cauchy factorization handles $n = 2 \times 10^4$ and beyond.
-      </figcaption>
-    </figure>
   </section>
 
   <!-- Results -->
   <section id="results">
     <h2>Experimental Results</h2>
+
+    <h3>Runtime on Synthetic Graphs</h3>
+    <figure>
+      <img src="static/images/figure3.png" alt="Runtime scaling: Cauchy factorization vs eigendecomposition" />
+      <figcaption>
+        <strong>Figure 3.</strong> Runtime vs. graph size (left) and cut size (right). The Cauchy factorization scales quadratically with $n$ and linearly with $k$, consistent with $O(kn^2)$ theory. Full eigendecomposition becomes impractical beyond $n \approx 10^4$; the Cauchy factorization handles $n = 2 \times 10^4$ and beyond. Preprocessing (spectral cut + sparsification) adds negligible overhead.
+      </figcaption>
+    </figure>
 
     <h3>Heterophilous Benchmarks</h3>
     <p>
