@@ -262,6 +262,22 @@
       text-align: center;
     }
 
+    .figure-row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem;
+      align-items: start;
+      margin: 2.5rem 0;
+    }
+
+    .figure-row figure {
+      margin: 0;
+    }
+
+    .figure-row figure img {
+      width: 100%;
+    }
+
     figure img {
       width: min(100%, 860px);
       border: 1px solid var(--rule);
@@ -516,6 +532,12 @@
       .method-grid .cell:nth-child(2n) { border-right: none; }
     }
 
+    @media (max-width: 900px) {
+      .figure-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
     /* ─── Fade-in animation ───────────────────────────── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
@@ -638,7 +660,7 @@
 
     <h3>Architecture</h3>
     <p>
-      L2G-Net inserts learnable spectral filters between Cauchy factors at every level of the hierarchy. Local filters capture subgraph-level spectral patterns; global filters model interactions across the full graph. The architecture is determined entirely by the graph topology, with no positional encodings or graph rewiring required.
+      L2G-Net inserts learnable spectral filters between Cauchy factors at every level of the hierarchy. Local filters capture subgraph-level spectral patterns; global filters model interactions across the full graph.
     </p>
 
     <figure>
@@ -649,7 +671,7 @@
     </figure>
 
     <p>
-      L2G-Net achieves a strictly intermediate computational profile, more expressive than local methods, and dramatically cheaper than full spectral methods.
+      L2G-Net achieves an intermediate computational profile, more expressive than local methods, and cheaper than full spectral methods.
     </p>
 
     <div class="method-grid">
@@ -690,12 +712,20 @@
     <h2>Experimental Results</h2>
 
     <h3>Runtime on Synthetic Graphs</h3>
-    <figure>
-      <img src="static/images/figure3.png" alt="Runtime scaling: Cauchy factorization vs eigendecomposition" />
-      <figcaption>
-        <strong>Figure 3.</strong> Runtime vs. graph size (left) and cut size (right). The Cauchy factorization scales quadratically with $n$ and linearly with $k$, consistent with $O(kn^2)$ theory. Full eigendecomposition becomes impractical beyond $n \approx 10^4$; the Cauchy factorization handles $n = 2 \times 10^4$ and beyond. Preprocessing (spectral cut + sparsification) adds negligible overhead.
-      </figcaption>
-    </figure>
+    <div class="figure-row">
+      <figure>
+        <img src="static/images/figure3.png" alt="Runtime scaling with graph size" />
+        <figcaption>
+          <strong>Figure 3.</strong> Runtime vs graph size (left). The Cauchy factorization scales quadratically with $n$ and linearly with $k$, consistent with $O(kn^2)$ theory. Full eigendecomposition becomes impractical beyond $n \approx 10^4$. Preprocessing (spectral cut + sparsification) adds negligible overhead.
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="static/images/figure4.png" alt="Scaling with number of bridge edges" />
+        <figcaption>
+          <strong>Figure 4.</strong> Scaling with bridge edges (right). Runtime grows near-linearly with the number of bridge edges, while SC + Sparse remains nearly flat across the tested range.
+        </figcaption>
+      </figure>
+    </div>
 
     <h3>Heterophilous Benchmarks</h3>
     <p>
