@@ -203,7 +203,7 @@
 
     h3 {
       font-family: var(--mono);
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--accent);
@@ -294,6 +294,10 @@
       margin-top: 0.75rem;
       line-height: 1.5;
       text-align: left;
+    }
+
+    .figure-small img {
+      width: min(100%, 640px);
     }
 
     figcaption strong {
@@ -464,11 +468,15 @@
     .method-grid .cell.ours-cell { background: var(--accent-light); font-weight: 500; }
 
     /* ─── Citation ────────────────────────────────────── */
-    .citation-block {
+    .citation-wrap {
+      position: relative;
       background: var(--cream);
       border: 1px solid var(--rule);
       border-radius: 2px;
       padding: 1.5rem;
+    }
+
+    .citation-block {
       font-family: var(--mono);
       font-size: 0.75rem;
       line-height: 1.8;
@@ -478,20 +486,27 @@
     }
 
     .copy-btn {
-      float: right;
+      position: absolute;
+      top: 0.9rem;
+      right: 0.9rem;
       font-family: var(--mono);
       font-size: 0.68rem;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      background: none;
+      background: var(--paper);
       border: 1px solid var(--rule);
       border-radius: 2px;
       padding: 0.3em 0.75em;
       cursor: pointer;
       color: var(--ink-3);
-      transition: color 0.2s, border-color 0.2s;
+      transition: color 0.2s, border-color 0.2s, background 0.2s;
     }
     .copy-btn:hover { color: var(--ink); border-color: var(--ink); }
+
+    .btn-disabled {
+      opacity: 0.65;
+      pointer-events: none;
+    }
 
     /* ─── Footer ──────────────────────────────────────── */
     footer {
@@ -581,6 +596,14 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       Paper
     </a>
+    <a class="btn btn-secondary" href="#" target="_blank" title="Slides link coming soon">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="18" x2="12" y2="20"/></svg>
+      Slides
+    </a>
+    <a class="btn btn-secondary btn-disabled" href="#" title="Poster coming soon" aria-disabled="true">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>
+      Poster
+    </a>
     <a class="btn btn-secondary" href="https://github.com/sf219/L2G_NET" target="_blank">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.113.82-.258.82-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.63-5.37-12-12-12z"/></svg>
       Code
@@ -663,7 +686,7 @@
       L2G-Net inserts learnable spectral filters between Cauchy factors at every level of the hierarchy. Local filters capture subgraph-level spectral patterns; global filters model interactions across the full graph.
     </p>
 
-    <figure>
+    <figure class="figure-small">
       <img src="static/images/figure2.png" alt="Energy propagation comparison: ChebNet, Global GFT, and L2G-Net" />
       <figcaption>
         <strong>Figure 2.</strong> Average energy versus hop distance from the source for a unit impulse. ChebNet has a hard cutoff at $K$ hops; a GFT-based GNN propagates energy globally. L2G-Net's locality bias adapts to the graph structure, interpolating between the two extremes.
@@ -753,7 +776,7 @@
         </tbody>
       </table>
     </div>
-    <p style="font-size:0.82rem; color: var(--ink-3); font-style:normal;">Accuracy (↑) for Roman-Empire and Amazon-Ratings; AUC (↑) for Minesweeper and Tolokers.</p>
+    <p style="font-size:0.96rem; color: var(--ink-3); font-style:normal;">Accuracy (↑) for Roman-Empire and Amazon-Ratings; AUC (↑) for Minesweeper and Tolokers.</p>
 
     <h3>City-Scale Graphs</h3>
     <p>
@@ -792,8 +815,9 @@
     <h2>Citation</h2>
     <p>If you find this work useful, please cite:</p>
 
-    <button class="copy-btn" onclick="copyCite()">Copy</button>
-    <pre class="citation-block" id="cite-block">@inproceedings{fernandezmenduina2026l2gnet,
+    <div class="citation-wrap">
+      <button class="copy-btn" onclick="copyCite()">Copy</button>
+      <pre class="citation-block" id="cite-block">@inproceedings{fernandezmenduina2026l2gnet,
   title     = {L2G-Net: Local to Global Spectral Graph Neural Networks
                via Cauchy Factorizations},
   author    = {Fern{\'a}ndez-Mendu\~{i}na, Samuel and
@@ -805,6 +829,7 @@
   series    = {Proceedings of Machine Learning Research},
   publisher = {PMLR}
 }</pre>
+    </div>
   </section>
 
 </main>
