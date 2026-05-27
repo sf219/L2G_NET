@@ -90,7 +90,7 @@
     }
 
     .authors {
-      font-size: 1rem;
+      font-size: 1.12rem;
       color: var(--ink-2);
       margin-bottom: 0.4rem;
     }
@@ -104,7 +104,7 @@
     .authors a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 
     .affiliation {
-      font-size: 0.88rem;
+      font-size: 1.02rem;
       color: var(--ink-3);
       font-style: italic;
       margin-bottom: 2.5rem;
@@ -230,7 +230,7 @@
     }
 
     figure img {
-      max-width: 100%;
+      width: min(100%, 860px);
       border: 1px solid var(--rule);
       border-radius: 2px;
       display: block;
@@ -238,9 +238,10 @@
     }
 
     figcaption {
-      font-size: 0.85rem;
+      font-family: var(--serif);
+      font-size: 0.98rem;
       color: var(--ink-3);
-      font-style: italic;
+      font-style: normal;
       margin-top: 0.75rem;
       line-height: 1.5;
       text-align: left;
@@ -248,9 +249,8 @@
 
     figcaption strong {
       font-style: normal;
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      letter-spacing: 0.05em;
+      font-family: var(--serif);
+      font-size: 0.98rem;
       color: var(--ink-2);
     }
 
@@ -415,6 +415,11 @@
       color: var(--ink-2);
     }
 
+    /* ─── KaTeX tuning ────────────────────────────────── */
+    .katex {
+      font-size: 1em;
+    }
+
     /* ─── Responsive ──────────────────────────────────── */
     @media (max-width: 640px) {
       nav ul { gap: 0; overflow-x: auto; }
@@ -447,7 +452,7 @@
 <!-- ══════════════════ HEADER ══════════════════ -->
 <header>
   <div class="fade-up">
-    <span class="venue-tag">ICML 2026 · Seoul</span>
+    <span class="venue-tag">ICML 2026 (spotlight) · Seoul</span>
   </div>
 
   <h1 class="fade-up">
@@ -510,7 +515,7 @@
   <section id="method">
     <h2>Method</h2>
     <p>
-      L2G-Net is built on a key theoretical insight: the GFT of any graph in a hierarchical graph family admits an <em>exact</em> Cauchy factorization. Given a graph partition, the global GFT decomposes as a product of local subgraph GFTs and a chain of Cauchy matrices — one per bridge edge connecting subgraphs.
+      L2G-Net is built on a key theoretical insight: the GFT of any graph in a hierarchical graph family admits an <em>exact</em> Cauchy factorization. Given a graph partition, the global GFT decomposes as a product of local subgraph GFTs and a chain of Cauchy matrices, one per bridge edge connecting subgraphs.
     </p>
 
     <figure>
@@ -528,7 +533,7 @@
       $$\mathbf{U}^\top = \mathbf{D}(\boldsymbol{\lambda}, \tilde{\boldsymbol{\lambda}}_{K-1}) \cdots \mathbf{D}(\tilde{\boldsymbol{\lambda}}_1, \tilde{\boldsymbol{\lambda}}_0)\, \mathbf{U}_0^\top$$
     </p>
     <p>
-      where each $\mathbf{D}(\tilde{\boldsymbol{\lambda}}, \boldsymbol{\lambda})$ is a <em>Cauchy factor</em> — a structured orthogonal matrix arising from a rank-one update of the Laplacian corresponding to one bridge edge. Each Cauchy factor is localized to the subgraphs it connects.
+      where each $\mathbf{D}(\tilde{\boldsymbol{\lambda}}, \boldsymbol{\lambda})$ is a <em>Cauchy factor</em>, a structured orthogonal matrix arising from a rank-one update of the Laplacian corresponding to one bridge edge. Each Cauchy factor is localized to the subgraphs it connects.
     </p>
 
     <h3>Architecture</h3>
@@ -548,7 +553,7 @@
   <section id="complexity">
     <h2>Complexity Comparison</h2>
     <p>
-      L2G-Net achieves a strictly intermediate computational profile — more expressive than local methods, and dramatically cheaper than full spectral methods.
+      L2G-Net achieves a strictly intermediate computational profile, more expressive than local methods, and dramatically cheaper than full spectral methods.
     </p>
 
     <div class="method-grid">
@@ -630,7 +635,7 @@
 
     <h3>City-Scale Graphs</h3>
     <p>
-      On city road network graphs with over $10^5$ nodes (Liang et al., 2025), full eigendecomposition runs out of memory. L2G-Net factorizes the London graph (569k nodes) in ~144 minutes — 3–4 orders of magnitude faster than projected eigendecomposition.
+      On city road network graphs with over $10^5$ nodes (Liang et al., 2025), full eigendecomposition runs out of memory. L2G-Net factorizes the London graph (569k nodes) in ~144 minutes, 3-4 orders of magnitude faster than projected eigendecomposition.
     </p>
 
     <div class="table-wrap">
@@ -646,7 +651,7 @@
         </thead>
         <tbody>
           <tr><td>ED (projected)</td><td>50,413 min</td><td>121,932 min</td><td>131,544 min</td><td>OOM</td></tr>
-          <tr class="ours"><td>CF — L2G-Net (ours)</td><td>17.91 min</td><td>45.61 min</td><td>61.53 min</td><td>144.22 min</td></tr>
+          <tr class="ours"><td>CF (L2G-Net, ours)</td><td>17.91 min</td><td>45.61 min</td><td>61.53 min</td><td>144.22 min</td></tr>
         </tbody>
       </table>
     </div>
