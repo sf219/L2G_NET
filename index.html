@@ -36,8 +36,8 @@
       --display: 'Fraunces', Georgia, serif;
       --mono: 'DM Mono', monospace;
 
-      --max-w: 860px;
-      --side: max(1.5rem, calc((100vw - var(--max-w)) / 2));
+      --max-w: 1040px;
+      --side: clamp(1rem, 4vw, 4rem);
     }
 
     html { scroll-behavior: smooth; }
@@ -182,7 +182,7 @@
 
     /* ─── Main Content ────────────────────────────────── */
     main {
-      max-width: var(--max-w);
+      width: min(100%, var(--max-w));
       margin: 0 auto;
       padding: 0 var(--side);
     }
@@ -463,7 +463,7 @@
   <p class="affiliation fade-up">University of Southern California</p>
 
   <div class="buttons fade-up">
-    <a class="btn btn-primary" href="https://arxiv.org/abs/XXXX.XXXXX" target="_blank">
+    <a class="btn btn-primary" href="https://arxiv.org/abs/2602.18837" target="_blank">
       <!-- paper icon -->
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       Paper
