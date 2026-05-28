@@ -6,35 +6,31 @@
   <title>L2G-Net: Local to Global Spectral GNNs via Cauchy Factorizations</title>
   <meta name="description" content="L2G-Net introduces an exact factorization of the Graph Fourier Transform into operators on subgraphs combined via Cauchy matrices, enabling efficient spectral GNNs with local-to-global inductive bias." />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet" />
 
-  <!-- KaTeX for math -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
     onload="renderMathInElement(document.body, {delimiters: [{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}]});"></script>
 
   <style>
-    /* ─── Reset & Base ────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --cream:   #f7f4ef;
-      --paper:   #fdfcf9;
-      --ink:     #1a1814;
-      --ink-2:   #3d3830;
-      --ink-3:   #7a7060;
-      --rule:    #ddd8ce;
-      --accent:  #2d5a8e;
+      --cream:        #f7f4ef;
+      --paper:        #fdfcf9;
+      --ink:          #1a1814;
+      --ink-2:        #3d3830;
+      --ink-3:        #7a7060;
+      --rule:         #ddd8ce;
+      --accent:       #2d5a8e;
       --accent-light: #e8f0f9;
-      --red:     #c0392b;
 
-      --serif: 'EB Garamond', Georgia, serif;
-      --display: 'Fraunces', Georgia, serif;
-      --mono: 'DM Mono', monospace;
+      --serif:  'EB Garamond', Georgia, serif;
+      --display:'Fraunces', Georgia, serif;
+      --mono:   'DM Mono', monospace;
 
       --max-w: 1040px;
       --side: clamp(1rem, 4vw, 4rem);
@@ -51,7 +47,7 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* ─── Header / Hero ───────────────────────────────── */
+    /* ── Header ──────────────────────────────────────── */
     header {
       background: var(--cream);
       border-bottom: 1px solid var(--rule);
@@ -84,16 +80,13 @@
       letter-spacing: -0.01em;
     }
 
-    .title-accent {
-      color: var(--accent);
-    }
+    .title-accent { color: var(--accent); }
 
     .authors {
       font-size: 1.12rem;
       color: var(--ink-2);
       margin-bottom: 0.4rem;
     }
-
     .authors a {
       color: var(--ink-2);
       text-decoration: underline;
@@ -105,11 +98,10 @@
     .affiliation {
       font-size: 1.16rem;
       color: var(--ink-3);
-      font-style: normal;
       margin-bottom: 2.5rem;
     }
 
-    /* ─── Action Buttons ──────────────────────────────── */
+    /* ── Buttons ─────────────────────────────────────── */
     .buttons {
       display: flex;
       gap: 0.5rem;
@@ -131,22 +123,13 @@
       border: 1px solid;
       transition: background 0.2s, color 0.2s, border-color 0.2s;
     }
-
-    .btn-primary {
-      background: var(--ink);
-      color: var(--paper);
-      border-color: var(--ink);
-    }
+    .btn-primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
     .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--ink);
-      border-color: var(--rule);
-    }
+    .btn-secondary { background: transparent; color: var(--ink); border-color: var(--rule); }
     .btn-secondary:hover { border-color: var(--ink); }
+    .btn-disabled { opacity: 0.55; pointer-events: none; }
 
-    /* ─── Nav ─────────────────────────────────────────── */
+    /* ── Nav ─────────────────────────────────────────── */
     nav {
       position: sticky;
       top: 0;
@@ -158,13 +141,7 @@
       display: flex;
       justify-content: center;
     }
-
-    nav ul {
-      display: flex;
-      gap: 0.25rem;
-      list-style: none;
-    }
-
+    nav ul { display: flex; gap: 0.25rem; list-style: none; }
     nav a {
       display: block;
       font-family: var(--mono);
@@ -179,7 +156,7 @@
     }
     nav a:hover, nav a.active { color: var(--ink); border-bottom-color: var(--accent); }
 
-    /* ─── Main Content ────────────────────────────────── */
+    /* ── Main ────────────────────────────────────────── */
     main {
       width: min(100%, var(--max-w));
       margin: 0 auto;
@@ -214,14 +191,13 @@
     p { margin-bottom: 1.1em; }
     p:last-child { margin-bottom: 0; }
 
-    /* ─── Abstract ────────────────────────────────────── */
+    /* ── Abstract ────────────────────────────────────── */
     .abstract-box {
       background: var(--cream);
       border-left: 3px solid var(--accent);
       padding: 1.25rem 1.75rem;
       border-radius: 0 2px 2px 0;
     }
-
     .abstract-box summary {
       cursor: pointer;
       font-family: var(--mono);
@@ -236,31 +212,13 @@
       gap: 1rem;
       padding: 0.5rem 0;
     }
-
     .abstract-box summary::-webkit-details-marker { display: none; }
+    .abstract-box summary::after { content: 'Expand'; font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.08em; }
+    .abstract-box[open] summary::after { content: 'Collapse'; }
+    .abstract-body { padding-top: 0.5rem; }
 
-    .abstract-box summary::after {
-      content: 'Expand';
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      color: var(--ink-3);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-    }
-
-    .abstract-box[open] summary::after {
-      content: 'Collapse';
-    }
-
-    .abstract-body {
-      padding-top: 0.5rem;
-    }
-
-    /* ─── Figures ─────────────────────────────────────── */
-    figure {
-      margin: 2.5rem 0;
-      text-align: center;
-    }
+    /* ── Figures ─────────────────────────────────────── */
+    figure { margin: 2.5rem 0; text-align: center; }
 
     .figure-row {
       display: grid;
@@ -269,14 +227,8 @@
       align-items: start;
       margin: 2.5rem 0;
     }
-
-    .figure-row figure {
-      margin: 0;
-    }
-
-    .figure-row figure img {
-      width: 100%;
-    }
+    .figure-row figure { margin: 0; }
+    .figure-row figure img { width: 100%; }
 
     figure img {
       width: min(100%, 860px);
@@ -285,83 +237,69 @@
       display: block;
       margin: 0 auto;
     }
+    .figure-small img { width: min(100%, 520px); }
 
     figcaption {
       font-family: var(--serif);
-      font-size: 1.12rem;
+      font-size: 1.05rem;
       color: var(--ink-3);
-      font-style: normal;
       margin-top: 0.75rem;
       line-height: 1.5;
       text-align: left;
     }
+    figcaption strong { font-family: var(--serif); font-size: 1.05rem; color: var(--ink-2); }
 
-    .figure-small img {
-      width: min(100%, 640px);
+    /* ── Step list (divide & conquer) ────────────────── */
+    .step-list {
+      list-style: none;
+      counter-reset: step;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin: 1.5rem 0;
     }
-
-    figcaption strong {
-      font-style: normal;
-      font-family: var(--serif);
-      font-size: 1.12rem;
-      color: var(--ink-2);
+    .step-list li {
+      counter-increment: step;
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
     }
-
-    /* ─── Results Table ───────────────────────────────── */
-    .table-wrap {
-      overflow-x: auto;
-      margin: 2rem 0;
-      border: 1px solid var(--rule);
-      border-radius: 2px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.88rem;
+    .step-list li::before {
+      content: counter(step);
       font-family: var(--mono);
-    }
-
-    thead {
-      background: var(--cream);
-      border-bottom: 2px solid var(--rule);
-    }
-
-    th {
-      padding: 0.65em 1em;
-      text-align: center;
       font-size: 0.72rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      font-weight: 400;
-      white-space: nowrap;
-    }
-
-    th:first-child { text-align: left; }
-
-    td {
-      padding: 0.6em 1em;
-      text-align: center;
-      border-top: 1px solid var(--rule);
-      color: var(--ink-2);
-    }
-
-    td:first-child { text-align: left; color: var(--ink); }
-
-    tr.ours td {
-      background: var(--accent-light);
-      color: var(--ink);
       font-weight: 500;
+      color: var(--paper);
+      background: var(--accent);
+      border-radius: 50%;
+      min-width: 1.6em;
+      height: 1.6em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 0.2em;
     }
 
-    tr.ours td:first-child::after {
-      content: ' ★';
+    /* ── Rank-one callout box ─────────────────────────── */
+    .theorem-box {
+      background: var(--cream);
+      border: 1px solid var(--rule);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 2px 2px 0;
+      padding: 1.25rem 1.75rem;
+      margin: 1.75rem 0;
+    }
+    .theorem-box .theorem-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       color: var(--accent);
-      font-size: 0.7em;
+      margin-bottom: 0.5rem;
     }
 
-    /* ─── Complexity callout ──────────────────────────── */
+    /* ── Complexity callout ───────────────────────────── */
     .complexity-callout {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -372,7 +310,6 @@
       overflow: hidden;
       margin: 2rem 0;
     }
-
     .complexity-callout .stat {
       background: var(--paper);
       padding: 1.5rem 1.75rem;
@@ -380,11 +317,7 @@
       flex-direction: column;
       gap: 0.4rem;
     }
-
-    .complexity-callout .stat.highlight {
-      background: var(--accent-light);
-    }
-
+    .complexity-callout .stat.highlight { background: var(--accent-light); }
     .complexity-callout .stat-label {
       font-family: var(--mono);
       font-size: 0.68rem;
@@ -392,54 +325,15 @@
       text-transform: uppercase;
       color: var(--ink-3);
     }
-
     .complexity-callout .stat-value {
       font-family: var(--serif);
       font-size: 1.6rem;
       line-height: 1.1;
       color: var(--ink);
     }
+    .complexity-callout .stat.highlight .stat-value { color: var(--accent); }
 
-    .complexity-callout .stat.highlight .stat-value {
-      color: var(--accent);
-    }
-
-    .complexity-callout .stat-note {
-      font-family: var(--serif);
-      font-size: 0.88rem;
-      color: var(--ink-3);
-      line-height: 1.4;
-    }
-
-    @media (max-width: 540px) {
-      .complexity-callout { grid-template-columns: 1fr; }
-    }
-
-    /* ─── Contributions ───────────────────────────────── */
-    .contribution-list {
-      list-style: none;
-      counter-reset: contrib;
-    }
-
-    .contribution-list li {
-      counter-increment: contrib;
-      display: flex;
-      gap: 1.25rem;
-      margin-bottom: 1.2rem;
-      align-items: flex-start;
-    }
-
-    .contribution-list li::before {
-      content: counter(contrib, decimal-leading-zero);
-      font-family: var(--mono);
-      font-size: 0.78rem;
-      color: var(--accent);
-      min-width: 2em;
-      padding-top: 0.15em;
-      flex-shrink: 0;
-    }
-
-    /* ─── Complexity Table ────────────────────────────── */
+    /* ── Method grid ─────────────────────────────────── */
     .method-grid {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -450,7 +344,6 @@
       margin: 2rem 0;
       font-size: 0.83rem;
     }
-
     .method-grid .cell {
       padding: 0.75em 1em;
       border-right: 1px solid var(--rule);
@@ -467,7 +360,72 @@
     }
     .method-grid .cell.ours-cell { background: var(--accent-light); font-weight: 500; }
 
-    /* ─── Citation ────────────────────────────────────── */
+    /* ── Results stat grid (MIRA style) ──────────────── */
+    .results-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--rule);
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      overflow: hidden;
+      margin: 2rem 0;
+    }
+    .results-stats .rstat {
+      background: var(--paper);
+      padding: 1.5rem 1.25rem;
+      text-align: center;
+    }
+    .results-stats .rstat-value {
+      font-family: var(--display);
+      font-size: 2.1rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .results-stats .rstat-label {
+      font-family: var(--mono);
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      line-height: 1.4;
+    }
+
+    /* ── Result headlines ────────────────────────────── */
+    .result-headlines {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 2rem 0;
+      border: 1px solid var(--rule);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .result-headlines li {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--rule);
+      font-size: 0.97rem;
+    }
+    .result-headlines li:last-child { border-bottom: none; }
+    .result-headlines li:nth-child(odd) { background: var(--cream); }
+    .result-headlines .rh-tag {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding-top: 0.15em;
+    }
+
+    /* ── Citation ────────────────────────────────────── */
     .citation-wrap {
       position: relative;
       background: var(--cream);
@@ -475,7 +433,6 @@
       border-radius: 2px;
       padding: 1.5rem;
     }
-
     .citation-block {
       font-family: var(--mono);
       font-size: 0.75rem;
@@ -484,7 +441,6 @@
       white-space: pre;
       color: var(--ink-2);
     }
-
     .copy-btn {
       position: absolute;
       top: 0.9rem;
@@ -499,16 +455,11 @@
       padding: 0.3em 0.75em;
       cursor: pointer;
       color: var(--ink-3);
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
+      transition: color 0.2s, border-color 0.2s;
     }
     .copy-btn:hover { color: var(--ink); border-color: var(--ink); }
 
-    .btn-disabled {
-      opacity: 0.65;
-      pointer-events: none;
-    }
-
-    /* ─── Footer ──────────────────────────────────────── */
+    /* ── Footer ──────────────────────────────────────── */
     footer {
       text-align: center;
       padding: 3rem var(--side);
@@ -518,11 +469,9 @@
       font-family: var(--mono);
       letter-spacing: 0.04em;
     }
-
     footer a { color: var(--ink-3); text-decoration: underline; }
     footer a:hover { color: var(--ink); }
 
-    /* ─── Inline code ─────────────────────────────────── */
     code {
       font-family: var(--mono);
       font-size: 0.82em;
@@ -533,37 +482,28 @@
       color: var(--ink-2);
     }
 
-    /* ─── KaTeX tuning ────────────────────────────────── */
-    .katex {
-      font-size: 1em;
-    }
+    .katex { font-size: 1em; }
 
-    /* ─── Responsive ──────────────────────────────────── */
+    /* ── Responsive ──────────────────────────────────── */
     @media (max-width: 640px) {
-      nav ul { gap: 0; overflow-x: auto; }
+      nav ul { overflow-x: auto; }
       nav a { padding: 0.75em 0.6em; font-size: 0.65rem; }
       .method-grid { grid-template-columns: 1fr 1fr; }
       .method-grid .cell:nth-child(4n) { border-right: 1px solid var(--rule); }
       .method-grid .cell:nth-child(2n) { border-right: none; }
+      .results-stats { grid-template-columns: repeat(2, 1fr); }
     }
-
     @media (max-width: 900px) {
-      .figure-row {
-        grid-template-columns: 1fr;
-      }
+      .figure-row { grid-template-columns: 1fr; }
+      .complexity-callout { grid-template-columns: 1fr; }
     }
 
-    /* ─── Fade-in animation ───────────────────────────── */
+    /* ── Fade-in ─────────────────────────────────────── */
     @keyframes fadeUp {
       from { opacity: 0; transform: translateY(18px); }
       to   { opacity: 1; transform: translateY(0); }
     }
-
-    .fade-up {
-      opacity: 0;
-      animation: fadeUp 0.55s ease forwards;
-    }
-
+    .fade-up { opacity: 0; animation: fadeUp 0.55s ease forwards; }
     .fade-up:nth-child(1) { animation-delay: 0.05s; }
     .fade-up:nth-child(2) { animation-delay: 0.15s; }
     .fade-up:nth-child(3) { animation-delay: 0.25s; }
@@ -573,7 +513,7 @@
 </head>
 <body>
 
-<!-- ══════════════════ HEADER ══════════════════ -->
+<!-- ══ HEADER ══════════════════════════════════════════ -->
 <header>
   <div class="fade-up">
     <span class="venue-tag">ICML 2026 (spotlight) · Seoul</span>
@@ -596,11 +536,11 @@
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       Paper
     </a>
-    <a class="btn btn-secondary" href="#" target="_blank" title="Slides link coming soon">
+    <a class="btn btn-secondary" href="static/slides.pdf" target="_blank">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="8" y1="20" x2="16" y2="20"/><line x1="12" y1="18" x2="12" y2="20"/></svg>
       Slides
     </a>
-    <a class="btn btn-secondary btn-disabled" href="#" title="Poster coming soon" aria-disabled="true">
+    <a class="btn btn-secondary btn-disabled" href="#" aria-disabled="true" title="Poster coming soon">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="13" y2="16"/></svg>
       Poster
     </a>
@@ -611,17 +551,18 @@
   </div>
 </header>
 
-<!-- ══════════════════ NAV ══════════════════ -->
+<!-- ══ NAV ═════════════════════════════════════════════ -->
 <nav>
   <ul>
     <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#background">Background</a></li>
     <li><a href="#method">Method</a></li>
     <li><a href="#results">Results</a></li>
     <li><a href="#citation">Citation</a></li>
   </ul>
 </nav>
 
-<!-- ══════════════════ MAIN ══════════════════ -->
+<!-- ══ MAIN ════════════════════════════════════════════ -->
 <main>
 
   <!-- Abstract -->
@@ -633,45 +574,112 @@
           Despite their theoretical advantages, spectral methods based on the graph Fourier transform (GFT) are seldom used in graph neural networks due to the cost of computing the eigenbasis and the lack of vertex-domain locality in the resulting representations. As a result, most GNNs rely on local approximations such as polynomial Laplacian filters or message passing, which limit their ability to model long-range dependencies.
         </p>
         <p>
-          We introduce an <strong>exact factorization of the GFT into operators acting on subgraphs</strong>, combined via a sequence of Cauchy matrices. Building on this factorization, we propose <strong>L2G-Net</strong> (Local to Global Net): a new class of spectral GNNs that operates by processing the spectral representations of subgraphs and combining them via structured matrices, avoiding full eigendecompositions with <strong>$O(kn^2)$ complexity</strong>. Experiments on large graphs show that L2G-Net scales to regimes out of reach for the standard GFT, and is competitive with state-of-the-art methods with orders of magnitude fewer learnable parameters.
+          We introduce an <strong>exact factorization of the GFT into operators acting on subgraphs</strong>, combined via a sequence of Cauchy matrices. Building on this factorization, we propose <strong>L2G-Net</strong> (Local to Global Net): a new class of spectral GNNs that avoids full eigendecompositions with <strong>$O(kn^2)$ complexity</strong>. Experiments on large graphs show that L2G-Net scales to regimes out of reach for the standard GFT, and is competitive with state-of-the-art methods with orders of magnitude fewer learnable parameters.
         </p>
       </div>
     </details>
   </section>
 
-  <!-- Method -->
-  <section id="method">
-    <h2>Method</h2>
+  <!-- Background -->
+  <section id="background">
+    <h2>Background</h2>
+
+    <h3>The Graph Fourier Transform</h3>
     <p>
-    The GFT of any graph admits an <em>exact</em> Cauchy factorization. Given a graph partition, the global GFT decomposes as a product of local subgraph GFTs and a chain of Cauchy matrices, one per bridge edge connecting subgraphs.
+      The graph Fourier transform (GFT) generalizes classical signal processing to irregular graph domains. Given the eigendecomposition $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ of the graph Laplacian, the GFT of a signal $\mathbf{x}$ is $\hat{\mathbf{x}} = \mathbf{U}^\top \mathbf{x}$. Each eigenvector is a graph frequency: low-frequency eigenvectors vary slowly across the graph (smooth signals), while high-frequency ones oscillate rapidly across edges.
     </p>
 
-    <figure>
-      <img src="static/images/figure1.png" alt="L2G-Net hierarchical factorization and spectral processing pipeline" />
+    <figure class="figure-small">
+      <img src="static/images/gft_example.png" alt="Three graph eigenvectors at increasing frequencies" />
       <figcaption>
-        <strong>Figure 1.</strong> (a) A hierarchical graph with bridge edges shown in different colors. The global GFT decomposes as the product of subgraph GFTs and a sequence of Cauchy factors. (b) L2G-Net first computes base GFTs of small subgraphs and applies local spectral filters, then mixes outputs via Cauchy factors. A global spectral filter acts on the full graph representation at the last level.
+        <strong>Graph Fourier modes.</strong> The eigenvectors of the graph Laplacian at $\lambda = 0.00$, $0.33$, and $1.57$. Low-frequency modes (left) vary smoothly; high-frequency modes (right) oscillate sharply between adjacent nodes.
       </figcaption>
     </figure>
 
-    <h3>Cauchy Factorization</h3>
     <p>
-      For any graph with Laplacian $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$, with at most $k$ bridge edges between subgraphs, and $\mathbf{U}_0$ the block-diagonal matrix of subgraph eigenvectors:
+      GFT-based GNNs are theoretically appealing but rarely used in practice due to two limitations: computing the eigenbasis costs $O(n^3)$, and GFT operations are fully global — modifying any spectral coefficient affects all nodes simultaneously. MPNNs and polynomial filters address cost and locality but suffer from oversquashing. Graph transformers recover global reach at the cost of topological inductive bias. <strong>Our goal is exact GFT processing with local-to-global structure.</strong>
+    </p>
+
+    <h3>Rank-one updates and Cauchy matrices</h3>
+    <p>
+      Adding an edge $(i, j)$ with weight $w_{ij}$ to a graph with Laplacian $\mathbf{L}$ yields a rank-one update:
+    </p>
+    <p style="text-align:center; padding:0.4rem 0;">
+      $$\tilde{\mathbf{L}} = \mathbf{L} + w_{ij}\,\mathbf{v}\mathbf{v}^\top, \qquad \mathbf{v} = \mathbf{e}_i - \mathbf{e}_j.$$
+    </p>
+
+    <div class="theorem-box">
+      <div class="theorem-label">Cauchy update of the eigenbasis &nbsp;[Fernández et al., 2025]</div>
+      <p>
+        Each rank-one update rotates the eigenbasis by an <em>orthogonal Cauchy-like matrix</em> (OCLM). Specifically, if $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ and $\tilde{\mathbf{L}} = \tilde{\mathbf{U}}\,\mathrm{diag}(\tilde{\boldsymbol{\lambda}})\,\tilde{\mathbf{U}}^\top$, then:
+      </p>
+      <p style="text-align:center; padding:0.5rem 0;">
+        $$\tilde{\mathbf{U}}^\top = \mathbf{C}(\tilde{\boldsymbol{\lambda}},\,\boldsymbol{\lambda})\,\mathbf{U}^\top$$
+      </p>
+      <p>
+        where $\mathbf{C}(\tilde{\boldsymbol{\lambda}}, \boldsymbol{\lambda})$ is an OCLM with entries $C_{ij} = z_i / (\tilde{\lambda}_j - \lambda_i)$, and $\tilde{\boldsymbol{\lambda}}$ is found via the secular equation. The new eigenvalues interlace the old ones: $\lambda_1 \le \tilde{\lambda}_1 \le \lambda_2 \le \cdots \le \lambda_n \le \tilde{\lambda}_n$.
+      </p>
+    </div>
+
+    <p>
+      This result is the key building block of our factorization: because every edge is a rank-one update of the Laplacian, the full GFT of any graph decomposes into a chain of Cauchy updates — one per edge added.
+    </p>
+  </section>
+
+  <!-- Method -->
+  <section id="method">
+    <h2>Method</h2>
+
+    <h3>GFT via divide and conquer</h3>
+    <p>
+      Rather than adding all edges at once, we build the GFT hierarchically. Starting from independent subgraphs, we progressively merge them by adding one bridge edge at a time — each step is a rank-one update handled by a Cauchy factor.
+    </p>
+
+    <ul class="step-list">
+      <li><strong>Partition</strong> the graph into subgraphs using balanced cuts (spectral bisection via the Fiedler vector).</li>
+      <li><strong>Compute</strong> the GFT of each base subgraph independently.</li>
+      <li><strong>Merge</strong> subgraph GFTs progressively using one Cauchy factor per bridge edge. Merging is fast because each Cauchy factor is localized to the two subgraphs it connects.</li>
+    </ul>
+
+    <figure>
+      <img src="static/images/figure1.png" alt="Hierarchical GFT factorization and L2G-Net pipeline" />
+      <figcaption>
+        <strong>Figure 1.</strong> (a) A hierarchical graph across three levels. The global GFT decomposes as the product of subgraph GFTs and a sequence of Cauchy factors, one per bridge edge. (b) L2G-Net applies learnable local spectral filters at each subgraph, mixes via Cauchy factors, and applies a global filter at the top level.
+      </figcaption>
+    </figure>
+
+    <h3>Finding a suitable hierarchy</h3>
+    <p>
+      The factorization cost is $O(kn^2)$, where $k$ is the number of bridge edges between subgraphs. For this to beat dense eigendecomposition, we need balanced partitions with small cuts. We accept a partition only when it provably reduces cost:
+    </p>
+    <p style="text-align:center; padding:0.4rem 0;">
+      $$n^2 k + \max_i f(\mathcal{G}_i) < f(\mathcal{G})$$
+    </p>
+    <p>
+      where $f(\mathcal{G})$ is the eigendecomposition cost of the full graph. When no balanced partition satisfies this, we apply <strong>cut sparsification</strong> (Spielman–Srivastava) to reduce $k$ while preserving the Laplacian quadratic form up to $(1\pm\varepsilon)$.
+    </p>
+
+    <figure class="figure-small">
+      <img src="static/images/sparsification.png" alt="Graph partition and sparsification: 8 bridge edges reduced to 2" />
+      <figcaption>
+        <strong>Hierarchy construction.</strong> Spectral bisection partitions the graph (center); sparsification reduces the cut from 8 bridge edges to 2 (right), drastically lowering factorization cost.
+      </figcaption>
+    </figure>
+
+    <h3>Cauchy factorization theorem</h3>
+    <p>
+      For any graph $G \in \mathcal{F}(L, \{G_i\}_{i=1}^m, k)$ with Laplacian $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$, and $\mathbf{U}_0$ the block-diagonal matrix of subgraph eigenvectors:
     </p>
     <p style="text-align:center; padding: 0.5rem 0;">
       $$\mathbf{U}^\top = \mathbf{D}(\boldsymbol{\lambda}, \tilde{\boldsymbol{\lambda}}_{K-1}) \cdots \mathbf{D}(\tilde{\boldsymbol{\lambda}}_1, \tilde{\boldsymbol{\lambda}}_0)\, \mathbf{U}_0^\top$$
     </p>
     <p>
-      where each $\mathbf{D}(\tilde{\boldsymbol{\lambda}}, \boldsymbol{\lambda})$ is a <em>Cauchy factor</em>, a structured orthogonal matrix arising from a rank-one update of the Laplacian corresponding to one bridge edge. Each Cauchy factor is localized to the subgraphs it connects.
-    </p>
-
-    <h3>Complexity</h3>
-    <p>
-      We provide an efficient algorithm for computing the Cauchy factorization. Obtaining all Cauchy factors has <strong>quadratic complexity in the number of nodes</strong>, scaled by the maximum cut size between subgraphs $k$, reducing exact GFT-based operators from $O(n^3)$ to $O(kn^2)$.
+      Each Cauchy factor $\mathbf{D}$ is localized to the two subgraphs it connects, and the full chain computes the exact global GFT. This is computable in $O(kn^2 + \sum_i f_i(n))$ time — quadratic in $n$, linear in $k$.
     </p>
 
     <div class="complexity-callout">
       <div class="stat highlight">
-        <span class="stat-label">Cauchy factorization</span>
+        <span class="stat-label">Cauchy factorization (ours)</span>
         <span class="stat-value">$O(kn^2)$</span>
       </div>
       <div class="stat">
@@ -680,22 +688,23 @@
       </div>
     </div>
 
-
-    <h3>Architecture</h3>
+    <h3>L2G-Net architecture</h3>
     <p>
-      L2G-Net inserts learnable spectral filters between Cauchy factors at every level of the hierarchy. Local filters capture subgraph-level spectral patterns; global filters model interactions across the full graph.
+      L2G-Net inserts learnable spectral filters at every level of the Cauchy factorization. Local filters (one per subgraph at each level) capture within-subgraph spectral patterns; a global filter at the top level models long-range interactions. The architecture is graph-adaptive and fixed before training begins — no positional encodings or rewiring needed.
+    </p>
+
+    <p>
+      L2G-Net is strictly more expressive than any global spectral filter $g(\mathbf{L})$: local filters with different responses per subgraph produce operators that cannot be represented as a single polynomial of the Laplacian.
     </p>
 
     <figure class="figure-small">
       <img src="static/images/figure2.png" alt="Energy propagation comparison: ChebNet, Global GFT, and L2G-Net" />
       <figcaption>
-        <strong>Figure 2.</strong> Average energy versus hop distance from the source for a unit impulse. ChebNet has a hard cutoff at $K$ hops; a GFT-based GNN propagates energy globally. L2G-Net's locality bias adapts to the graph structure, interpolating between the two extremes.
+        <strong>Figure 2.</strong> Average energy versus hop distance from a unit impulse. ChebNet cuts off sharply at $K$ hops; the global GFT spreads energy across all nodes; L2G-Net's locality bias adapts to graph structure, interpolating between the two.
       </figcaption>
     </figure>
 
-    <p>
-      L2G-Net achieves an intermediate computational profile: more expressive than local methods, and cheaper than the GFT.
-    </p>
+    <p>L2G-Net occupies a unique position in the design space:</p>
 
     <div class="method-grid">
       <div class="cell header">Method</div>
@@ -732,82 +741,77 @@
 
   <!-- Results -->
   <section id="results">
-    <h2>Experimental Results</h2>
+    <h2>Results</h2>
 
-    <h3>Runtime on Synthetic Graphs</h3>
+    <div class="results-stats">
+      <div class="rstat">
+        <div class="rstat-value">3–4 ×10³</div>
+        <div class="rstat-label">Speedup vs. projected ED on city-scale graphs</div>
+      </div>
+      <div class="rstat">
+        <div class="rstat-value">4×</div>
+        <div class="rstat-label">Memory reduction vs. full GFT at shallowest hierarchy</div>
+      </div>
+      <div class="rstat">
+        <div class="rstat-value">569k</div>
+        <div class="rstat-label">Nodes in London graph — factorized in ~144 min</div>
+      </div>
+      <div class="rstat">
+        <div class="rstat-value">97.50</div>
+        <div class="rstat-label">AUC on Minesweeper — best among all methods</div>
+      </div>
+      <div class="rstat">
+        <div class="rstat-value">≪ 10⁷</div>
+        <div class="rstat-label">Learnable parameters vs. Polynormer at 10⁶–10⁷</div>
+      </div>
+      <div class="rstat">
+        <div class="rstat-value">O(n²)</div>
+        <div class="rstat-label">Confirmed empirically on synthetic Barabási–Albert graphs</div>
+      </div>
+    </div>
+
+    <ul class="result-headlines">
+      <li>
+        <span class="rh-tag">Complexity</span>
+        Cauchy factorization scales quadratically with $n$ and linearly with cut size $k$, confirming Theorem 3.2. Full eigendecomposition becomes impractical beyond $n \approx 10^4$; our method handles $2\times10^4$ and beyond.
+      </li>
+      <li>
+        <span class="rh-tag">Heterophily</span>
+        On four large heterophilous benchmarks (Roman-Empire, Amazon-Ratings, Minesweeper, Tolokers), L2G-Net matches or exceeds Polynormer and Stable-ChebNet with a single shared filter and far fewer parameters.
+      </li>
+      <li>
+        <span class="rh-tag">City-scale</span>
+        Full eigendecomposition is infeasible (OOM) on Paris, Shanghai, LA, and London road networks. L2G-Net factors all four successfully, 3–4 orders of magnitude faster than projected ED.
+      </li>
+      <li>
+        <span class="rh-tag">Drug discovery</span>
+        On peptides-func and peptides-struct (LRGB), L2G-Net outperforms all spectral baselines (ChebNet, Stable-ChebNet, Specformer) and matches spatio-spectral hybrids — without positional encodings or graph rewiring.
+      </li>
+      <li>
+        <span class="rh-tag">Parameters</span>
+        L2G-Net achieves competitive accuracy across all benchmarks while requiring orders of magnitude fewer learnable parameters than attention-based baselines such as Polynormer.
+      </li>
+      <li>
+        <span class="rh-tag">Locality</span>
+        Grad-CAM analysis confirms that L2G-Net concentrates predictive importance on a small subset of nodes — consistent with its local-to-global inductive bias — while Global GFT and Polynormer spread importance more diffusely.
+      </li>
+    </ul>
+
+    <h3>Runtime on synthetic graphs</h3>
     <div class="figure-row">
       <figure>
-        <img src="static/images/figure3.png" alt="Runtime scaling with graph size" />
+        <img src="static/images/figure3.png" alt="Runtime vs graph size" />
         <figcaption>
-          <strong>Figure 3.</strong> Runtime vs graph size (left). The Cauchy factorization scales quadratically with $n$. Preprocessing (spectral cut + sparsification) adds negligible overhead.
+          <strong>Figure 3.</strong> Runtime vs. $n$ at fixed $k=5$. Cauchy factorization follows $O(n^2)$; full ED follows $O(n^3)$ and is impractical beyond $n \approx 10^4$.
         </figcaption>
       </figure>
       <figure>
-        <img src="static/images/figure4.png" alt="Scaling with number of bridge edges" />
+        <img src="static/images/figure4.png" alt="Runtime vs cut size" />
         <figcaption>
-          <strong>Figure 4.</strong> Scaling with bridge edges (right). Runtime grows near-linearly with the number of bridge edges, while SC + Sparse remains nearly flat across the tested range.
+          <strong>Figure 4.</strong> Runtime vs. number of bridge edges $k$ at fixed $n=8000$. CF scales linearly with $k$; preprocessing (SC + Sparse) remains nearly flat.
         </figcaption>
       </figure>
     </div>
-
-    <h3>Heterophilous Benchmarks</h3>
-    <p>
-      On large-scale heterophilous graphs (Platonov et al., 2023), L2G-Net matches or exceeds state-of-the-art methods including Polynormer and Stable-ChebNet, while using orders of magnitude fewer learnable parameters.
-    </p>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Method</th>
-            <th>Roman-Empire</th>
-            <th>Amazon-Ratings</th>
-            <th>Minesweeper</th>
-            <th>Tolokers</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>GCN</td><td>73.69</td><td>48.70</td><td>89.75</td><td>83.64</td></tr>
-          <tr><td>CO-GNN</td><td>91.57</td><td>54.17</td><td>97.31</td><td>84.45</td></tr>
-          <tr><td>Polynormer</td><td>92.55</td><td>54.81</td><td>97.46</td><td>85.91</td></tr>
-          <tr><td>MP-SSM</td><td>90.91</td><td>53.65</td><td>95.33</td><td>85.26</td></tr>
-          <tr><td>Stable-ChebNet</td><td>92.03</td><td>53.15</td><td>95.71</td><td>85.55</td></tr>
-          <tr class="ours"><td>L2G-Net (ours)</td><td>92.12</td><td>53.39</td><td>97.50</td><td>85.57</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p style="font-size:0.95rem; color: var(--ink-3); font-style:normal;">Accuracy (↑) for Roman-Empire and Amazon-Ratings; AUC (↑) for Minesweeper and Tolokers.</p>
-
-    <h3>City-Scale Graphs</h3>
-    <p>
-      On city road network graphs with over $10^5$ nodes (Liang et al., 2025), full eigendecomposition runs out of memory. L2G-Net factorizes the London graph (569k nodes) in ~144 minutes, 3-4 orders of magnitude faster than projected eigendecomposition.
-    </p>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Method</th>
-            <th>Paris</th>
-            <th>Shanghai</th>
-            <th>LA</th>
-            <th>London</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>ED (projected)</td><td>50,413 min</td><td>121,932 min</td><td>131,544 min</td><td>OOM</td></tr>
-          <tr class="ours"><td>CF (L2G-Net, ours)</td><td>17.91 min</td><td>45.61 min</td><td>61.53 min</td><td>144.22 min</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <h3>Parameter Efficiency</h3>
-    <figure>
-      <img src="static/images/figure5.png" alt="Performance vs number of learnable parameters" />
-      <figcaption>
-        <strong>Figure 5.</strong> Performance vs number of learnable parameters across four heterophilous benchmarks. L2G-Net achieves competitive or superior accuracy with orders of magnitude fewer parameters than transformer-based baselines, and consistently outperforms the Global GFT.
-      </figcaption>
-    </figure>
   </section>
 
   <!-- Citation -->
@@ -834,7 +838,7 @@
 
 </main>
 
-<!-- ══════════════════ FOOTER ══════════════════ -->
+<!-- ══ FOOTER ══════════════════════════════════════════ -->
 <footer>
   <p>
     L2G-Net · ICML 2026 ·
@@ -848,7 +852,6 @@
 </footer>
 
 <script>
-  // ── Active nav link on scroll ──
   const sections = document.querySelectorAll('section[id]');
   const navLinks = document.querySelectorAll('nav a');
 
@@ -864,7 +867,6 @@
 
   sections.forEach(s => observer.observe(s));
 
-  // ── Copy citation ──
   function copyCite() {
     const text = document.getElementById('cite-block').textContent;
     navigator.clipboard.writeText(text).then(() => {
