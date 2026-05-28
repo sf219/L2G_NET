@@ -586,7 +586,7 @@
 
     <h3>The Graph Fourier Transform</h3>
     <p>
-      The graph Fourier transform (GFT) generalizes classical signal processing to irregular graph domains. Given the eigendecomposition $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ of the graph Laplacian, the GFT of a signal $\mathbf{x}$ is $\hat{\mathbf{x}} = \mathbf{U}^\top \mathbf{x}$. Each eigenvector is a graph frequency: low-frequency eigenvectors vary slowly across the graph (smooth signals), while high-frequency ones oscillate rapidly across edges.
+    Given the eigendecomposition $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ of the graph Laplacian, the GFT of a signal $\mathbf{x}$ is $\hat{\mathbf{x}} = \mathbf{U}^\top \mathbf{x}$. Each eigenvector is a graph frequency: low-frequency eigenvectors vary slowly across the graph (smooth signals), while high-frequency ones oscillate rapidly across edges.
     </p>
 
     <figure class="figure-small">
@@ -597,7 +597,7 @@
     </figure>
 
     <p>
-      GFT-based GNNs are theoretically appealing but rarely used in practice due to two limitations: computing the eigenbasis costs $O(n^3)$, and GFT operations are fully global — modifying any spectral coefficient affects all nodes simultaneously. MPNNs and polynomial filters address cost and locality but suffer from oversquashing. Graph transformers recover global reach at the cost of topological inductive bias. <strong>Our goal is exact GFT processing with local-to-global structure.</strong>
+      GFT-based GNNs are theoretically appealing but rarely used in practice due to two limitations: computing the eigenbasis costs $O(n^3)$, and GFT operations are fully global: modifying any spectral coefficient affects all nodes simultaneously.
     </p>
 
     <h3>Rank-one updates and Cauchy matrices</h3>
@@ -608,16 +608,23 @@
       $$\tilde{\mathbf{L}} = \mathbf{L} + w_{ij}\,\mathbf{v}\mathbf{v}^\top, \qquad \mathbf{v} = \mathbf{e}_i - \mathbf{e}_j.$$
     </p>
 
+    <figure class="figure-small">
+      <img src="static/images/edge_addition_figure.png" alt="Edge addition as a rank-one Laplacian update" />
+      <figcaption>
+        <strong>Edge addition.</strong> Adding a bridge edge updates the Laplacian by a rank-one term that only touches the two incident nodes.
+      </figcaption>
+    </figure>
+
     <div class="theorem-box">
       <div class="theorem-label">Cauchy update of the eigenbasis &nbsp;[Fernández et al., 2025]</div>
       <p>
-        Each rank-one update rotates the eigenbasis by an <em>orthogonal Cauchy-like matrix</em> (OCLM). Specifically, if $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ and $\tilde{\mathbf{L}} = \tilde{\mathbf{U}}\,\mathrm{diag}(\tilde{\boldsymbol{\lambda}})\,\tilde{\mathbf{U}}^\top$, then:
+        A rank-one update rotates the eigenbasis by an <em>orthogonal Cauchy-like matrix</em> (OCLM). If $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ and $\tilde{\mathbf{L}} = \tilde{\mathbf{U}}\,\mathrm{diag}(\tilde{\boldsymbol{\lambda}})\,\tilde{\mathbf{U}}^\top$, then:
       </p>
       <p style="text-align:center; padding:0.5rem 0;">
         $$\tilde{\mathbf{U}}^\top = \mathbf{C}(\tilde{\boldsymbol{\lambda}},\,\boldsymbol{\lambda})\,\mathbf{U}^\top$$
       </p>
       <p>
-        where $\mathbf{C}(\tilde{\boldsymbol{\lambda}}, \boldsymbol{\lambda})$ is an OCLM with entries $C_{ij} = z_i / (\tilde{\lambda}_j - \lambda_i)$, and $\tilde{\boldsymbol{\lambda}}$ is found via the secular equation. The new eigenvalues interlace the old ones: $\lambda_1 \le \tilde{\lambda}_1 \le \lambda_2 \le \cdots \le \lambda_n \le \tilde{\lambda}_n$.
+        Here $\mathbf{C}$ has entries $C_{ij} = z_i / (\tilde{\lambda}_j - \lambda_i)$ and the updated eigenvalues interlace the old ones: $\lambda_1 \le \tilde{\lambda}_1 \le \lambda_2 \le \cdots \le \lambda_n \le \tilde{\lambda}_n$.
       </p>
     </div>
 
@@ -754,48 +761,22 @@
       </div>
       <div class="rstat">
         <div class="rstat-value">569k</div>
-        <div class="rstat-label">Nodes in London graph — factorized in ~144 min</div>
+        <div class="rstat-label">Nodes in London graph, factorized in ~144 min</div>
       </div>
       <div class="rstat">
         <div class="rstat-value">97.50</div>
-        <div class="rstat-label">AUC on Minesweeper — best among all methods</div>
+        <div class="rstat-label">AUC on Minesweeper, best among all methods</div>
       </div>
       <div class="rstat">
         <div class="rstat-value">≪ 10⁷</div>
         <div class="rstat-label">Learnable parameters vs. Polynormer at 10⁶–10⁷</div>
       </div>
       <div class="rstat">
-        <div class="rstat-value">O(n²)</div>
+        <div class="rstat-value">O(kn²)</div>
         <div class="rstat-label">Confirmed empirically on synthetic Barabási–Albert graphs</div>
       </div>
     </div>
 
-    <ul class="result-headlines">
-      <li>
-        <span class="rh-tag">Complexity</span>
-        Cauchy factorization scales quadratically with $n$ and linearly with cut size $k$, confirming Theorem 3.2. Full eigendecomposition becomes impractical beyond $n \approx 10^4$; our method handles $2\times10^4$ and beyond.
-      </li>
-      <li>
-        <span class="rh-tag">Heterophily</span>
-        On four large heterophilous benchmarks (Roman-Empire, Amazon-Ratings, Minesweeper, Tolokers), L2G-Net matches or exceeds Polynormer and Stable-ChebNet with a single shared filter and far fewer parameters.
-      </li>
-      <li>
-        <span class="rh-tag">City-scale</span>
-        Full eigendecomposition is infeasible (OOM) on Paris, Shanghai, LA, and London road networks. L2G-Net factors all four successfully, 3–4 orders of magnitude faster than projected ED.
-      </li>
-      <li>
-        <span class="rh-tag">Drug discovery</span>
-        On peptides-func and peptides-struct (LRGB), L2G-Net outperforms all spectral baselines (ChebNet, Stable-ChebNet, Specformer) and matches spatio-spectral hybrids — without positional encodings or graph rewiring.
-      </li>
-      <li>
-        <span class="rh-tag">Parameters</span>
-        L2G-Net achieves competitive accuracy across all benchmarks while requiring orders of magnitude fewer learnable parameters than attention-based baselines such as Polynormer.
-      </li>
-      <li>
-        <span class="rh-tag">Locality</span>
-        Grad-CAM analysis confirms that L2G-Net concentrates predictive importance on a small subset of nodes — consistent with its local-to-global inductive bias — while Global GFT and Polynormer spread importance more diffusely.
-      </li>
-    </ul>
 
     <h3>Runtime on synthetic graphs</h3>
     <div class="figure-row">
