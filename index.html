@@ -573,7 +573,7 @@
 
     <h3>The Graph Fourier Transform</h3>
     <p>
-    The GFT basis is given by the eigenvectors of the graph Laplacian $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$. Each eigenvector corresponds to a graph frequency: low-frequency eigenvectors vary slowly across the graph, while high-frequency ones oscillate rapidly across edges.
+    The GFT basis is given by the eigenvectors of the graph Laplacian. Each eigenvector corresponds to a graph frequency: low-frequency eigenvectors vary slowly across the graph, while high-frequency ones oscillate rapidly across edges.
     </p>
 
     <figure class="figure-small">
@@ -597,9 +597,6 @@
 
     <figure class="figure-small">
       <img src="static/images/edge_addition_figure.png" alt="Edge addition as a rank-one Laplacian update" />
-      <figcaption>
-        <strong>Edge addition.</strong> Adding a bridge edge updates the Laplacian by a rank-one term that only touches the two incident nodes.
-      </figcaption>
     </figure>
 
     <p>
