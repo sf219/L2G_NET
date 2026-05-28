@@ -241,13 +241,17 @@
 
     figcaption {
       font-family: var(--serif);
-      font-size: 1.05rem;
+      font-size: 0.95rem;
       color: var(--ink-3);
       margin-top: 0.75rem;
       line-height: 1.5;
       text-align: left;
     }
-    figcaption strong { font-family: var(--serif); font-size: 1.05rem; color: var(--ink-2); }
+    figcaption strong { font-family: var(--serif); font-size: 0.95rem; color: var(--ink-2); }
+
+    table {
+      font-size: 0.95rem;
+    }
 
     /* ── Step list (divide & conquer) ────────────────── */
     .step-list {
@@ -569,7 +573,7 @@
 
     <h3>The Graph Fourier Transform</h3>
     <p>
-    The GFT basis is given by the eigenvectors of the graph Laplacian $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$. Each eigenvector corresponds to a graph frequency: low-frequency eigenvectors vary slowly across the graph (smooth signals), while high-frequency ones oscillate rapidly across edges.
+    The GFT basis is given by the eigenvectors of the graph Laplacian $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$. Each eigenvector corresponds to a graph frequency: low-frequency eigenvectors vary slowly across the graph, while high-frequency ones oscillate rapidly across edges.
     </p>
 
     <figure class="figure-small">
@@ -580,7 +584,7 @@
     </figure>
 
     <p>
-      GFT-based GNNs are theoretically appealing but rarely used in practice due to two limitations: computing the eigenbasis costs $O(n^3)$, and GFT operations are fully global, i.e., modifying any spectral coefficient affects all nodes simultaneously.
+      GFT-based GNNs are theoretically appealing but rarely used in practice since 1) computing the eigenbasis costs $O(n^3)$, and 2) GFT operations are fully global, i.e., modifying any spectral coefficient affects all nodes simultaneously.
     </p>
 
     <h3>Rank-one updates and Cauchy matrices</h3>
@@ -599,13 +603,13 @@
     </figure>
 
     <p>
-      Cauchy update of the eigenbasis [Fernández et al., 2025]. A rank-one update rotates the eigenbasis by an <em>orthogonal Cauchy-like matrix</em> (OCLM). If $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ and $\tilde{\mathbf{L}} = \tilde{\mathbf{U}}\,\mathrm{diag}(\tilde{\boldsymbol{\lambda}})\,\tilde{\mathbf{U}}^\top$, then:
+    A rank-one update rotates the eigenbasis by an <em>orthogonal Cauchy-like matrix</em> (OCLM). If $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ and $\tilde{\mathbf{L}} = \tilde{\mathbf{U}}\,\mathrm{diag}(\tilde{\boldsymbol{\lambda}})\,\tilde{\mathbf{U}}^\top$, then:
     </p>
     <p style="text-align:center; padding:0.5rem 0;">
       $$\tilde{\mathbf{U}}^\top = \mathbf{C}(\tilde{\boldsymbol{\lambda}},\,\boldsymbol{\lambda})\,\mathbf{U}^\top$$
     </p>
     <p>
-      Here $\mathbf{C}$ has entries $C_{ij} = z_i / (\tilde{\lambda}_j - \lambda_i)$ and the updated eigenvalues interlace the old ones: $\lambda_1 \le \tilde{\lambda}_1 \le \lambda_2 \le \cdots \le \lambda_n \le \tilde{\lambda}_n$.
+      Here $\mathbf{C}$ has entries $C_{ij} = a_jz_i / (\tilde{\lambda}_j - \lambda_i)$ and the updated eigenvalues interlace the old ones: $\lambda_1 \le \tilde{\lambda}_1 \le \lambda_2 \le \cdots \le \lambda_n \le \tilde{\lambda}_n$.
     </p>
 
   </section>
@@ -616,7 +620,7 @@
 
     <h3>GFT via divide and conquer</h3>
     <p>
-      Rather than adding all edges at once, we build the GFT hierarchically. Starting from independent subgraphs, we progressively merge them by adding one bridge edge at a time — each step is a rank-one update handled by a Cauchy factor.
+      Rather than adding all edges at once, we build the GFT hierarchically. Starting from independent subgraphs, we progressively merge them by adding one bridge edge at a time. Each step is a rank-one update handled by a Cauchy factor.
     </p>
 
     <ul class="step-list">
@@ -658,7 +662,7 @@
       $$\mathbf{U}^\top = \mathbf{D}(\boldsymbol{\lambda}, \tilde{\boldsymbol{\lambda}}_{K-1}) \cdots \mathbf{D}(\tilde{\boldsymbol{\lambda}}_1, \tilde{\boldsymbol{\lambda}}_0)\, \mathbf{U}_0^\top$$
     </p>
     <p>
-      Each Cauchy factor $\mathbf{D}$ is localized to the two subgraphs it connects, and the full chain computes the exact global GFT. This is computable in $O(kn^2 + \sum_i f_i(n))$ time — quadratic in $n$, linear in $k$.
+      Each Cauchy factor $\mathbf{D}$ is localized to the two subgraphs it connects, and the full chain computes the exact global GFT. This is computable in $O(kn^2 + \sum_i f_i(n))$ time, i.e., quadratic in $n$, linear in $k$.
     </p>
 
     <div class="complexity-callout">
