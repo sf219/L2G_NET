@@ -232,8 +232,8 @@
 
     figure img {
       width: min(100%, 860px);
-      border: 1px solid var(--rule);
-      border-radius: 2px;
+      border: none;
+      border-radius: 0;
       display: block;
       margin: 0 auto;
     }
@@ -569,7 +569,7 @@
 
     <h3>The Graph Fourier Transform</h3>
     <p>
-    GFT basis: eigenvectors of the graph Laplacian $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$. Each eigenvector corresponds to a graph frequency: low-frequency eigenvectors vary slowly across the graph (smooth signals), while high-frequency ones oscillate rapidly across edges.
+    The GFT basis is given by the eigenvectors of the graph Laplacian $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$. Each eigenvector corresponds to a graph frequency: low-frequency eigenvectors vary slowly across the graph (smooth signals), while high-frequency ones oscillate rapidly across edges.
     </p>
 
     <figure class="figure-small">
@@ -608,9 +608,6 @@
       Here $\mathbf{C}$ has entries $C_{ij} = z_i / (\tilde{\lambda}_j - \lambda_i)$ and the updated eigenvalues interlace the old ones: $\lambda_1 \le \tilde{\lambda}_1 \le \lambda_2 \le \cdots \le \lambda_n \le \tilde{\lambda}_n$.
     </p>
 
-    <p>
-      This result is the key building block of our factorization: because every edge is a rank-one update of the Laplacian, the full GFT of any graph decomposes into a chain of Cauchy updates — one per edge added.
-    </p>
   </section>
 
   <!-- Method -->
