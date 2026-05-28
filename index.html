@@ -19,8 +19,8 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --cream:        #f7f4ef;
-      --paper:        #fdfcf9;
+      --cream:        #ffffff;
+      --paper:        #ffffff;
       --ink:          #1a1814;
       --ink-2:        #3d3830;
       --ink-3:        #7a7060;
@@ -281,23 +281,6 @@
       margin-top: 0.2em;
     }
 
-    /* ── Rank-one callout box ─────────────────────────── */
-    .theorem-box {
-      background: var(--cream);
-      border: 1px solid var(--rule);
-      border-left: 3px solid var(--accent);
-      border-radius: 0 2px 2px 0;
-      padding: 1.25rem 1.75rem;
-      margin: 1.75rem 0;
-    }
-    .theorem-box .theorem-label {
-      font-family: var(--mono);
-      font-size: 0.68rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
 
     /* ── Complexity callout ───────────────────────────── */
     .complexity-callout {
@@ -586,7 +569,7 @@
 
     <h3>The Graph Fourier Transform</h3>
     <p>
-    Given the eigendecomposition $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ of the graph Laplacian, the GFT of a signal $\mathbf{x}$ is $\hat{\mathbf{x}} = \mathbf{U}^\top \mathbf{x}$. Each eigenvector is a graph frequency: low-frequency eigenvectors vary slowly across the graph (smooth signals), while high-frequency ones oscillate rapidly across edges.
+    GFT basis: eigenvectors of the graph Laplacian $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$. Each eigenvector corresponds to a graph frequency: low-frequency eigenvectors vary slowly across the graph (smooth signals), while high-frequency ones oscillate rapidly across edges.
     </p>
 
     <figure class="figure-small">
@@ -597,7 +580,7 @@
     </figure>
 
     <p>
-      GFT-based GNNs are theoretically appealing but rarely used in practice due to two limitations: computing the eigenbasis costs $O(n^3)$, and GFT operations are fully global: modifying any spectral coefficient affects all nodes simultaneously.
+      GFT-based GNNs are theoretically appealing but rarely used in practice due to two limitations: computing the eigenbasis costs $O(n^3)$, and GFT operations are fully global, i.e., modifying any spectral coefficient affects all nodes simultaneously.
     </p>
 
     <h3>Rank-one updates and Cauchy matrices</h3>
@@ -615,18 +598,15 @@
       </figcaption>
     </figure>
 
-    <div class="theorem-box">
-      <div class="theorem-label">Cauchy update of the eigenbasis &nbsp;[Fernández et al., 2025]</div>
-      <p>
-        A rank-one update rotates the eigenbasis by an <em>orthogonal Cauchy-like matrix</em> (OCLM). If $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ and $\tilde{\mathbf{L}} = \tilde{\mathbf{U}}\,\mathrm{diag}(\tilde{\boldsymbol{\lambda}})\,\tilde{\mathbf{U}}^\top$, then:
-      </p>
-      <p style="text-align:center; padding:0.5rem 0;">
-        $$\tilde{\mathbf{U}}^\top = \mathbf{C}(\tilde{\boldsymbol{\lambda}},\,\boldsymbol{\lambda})\,\mathbf{U}^\top$$
-      </p>
-      <p>
-        Here $\mathbf{C}$ has entries $C_{ij} = z_i / (\tilde{\lambda}_j - \lambda_i)$ and the updated eigenvalues interlace the old ones: $\lambda_1 \le \tilde{\lambda}_1 \le \lambda_2 \le \cdots \le \lambda_n \le \tilde{\lambda}_n$.
-      </p>
-    </div>
+    <p>
+      Cauchy update of the eigenbasis [Fernández et al., 2025]. A rank-one update rotates the eigenbasis by an <em>orthogonal Cauchy-like matrix</em> (OCLM). If $\mathbf{L} = \mathbf{U}\,\mathrm{diag}(\boldsymbol{\lambda})\,\mathbf{U}^\top$ and $\tilde{\mathbf{L}} = \tilde{\mathbf{U}}\,\mathrm{diag}(\tilde{\boldsymbol{\lambda}})\,\tilde{\mathbf{U}}^\top$, then:
+    </p>
+    <p style="text-align:center; padding:0.5rem 0;">
+      $$\tilde{\mathbf{U}}^\top = \mathbf{C}(\tilde{\boldsymbol{\lambda}},\,\boldsymbol{\lambda})\,\mathbf{U}^\top$$
+    </p>
+    <p>
+      Here $\mathbf{C}$ has entries $C_{ij} = z_i / (\tilde{\lambda}_j - \lambda_i)$ and the updated eigenvalues interlace the old ones: $\lambda_1 \le \tilde{\lambda}_1 \le \lambda_2 \le \cdots \le \lambda_n \le \tilde{\lambda}_n$.
+    </p>
 
     <p>
       This result is the key building block of our factorization: because every edge is a rank-one update of the Laplacian, the full GFT of any graph decomposes into a chain of Cauchy updates — one per edge added.
@@ -697,11 +677,7 @@
 
     <h3>L2G-Net architecture</h3>
     <p>
-      L2G-Net inserts learnable spectral filters at every level of the Cauchy factorization. Local filters (one per subgraph at each level) capture within-subgraph spectral patterns; a global filter at the top level models long-range interactions. The architecture is graph-adaptive and fixed before training begins — no positional encodings or rewiring needed.
-    </p>
-
-    <p>
-      L2G-Net is strictly more expressive than any global spectral filter $g(\mathbf{L})$: local filters with different responses per subgraph produce operators that cannot be represented as a single polynomial of the Laplacian.
+      L2G-Net inserts learnable spectral filters at every level of the Cauchy factorization. Local filters (one per subgraph at each level) capture within-subgraph spectral patterns; a global filter at the top level models long-range interactions. The architecture is graph-adaptive and fixed before training begins.
     </p>
 
     <figure class="figure-small">
@@ -772,7 +748,7 @@
         <div class="rstat-label">Learnable parameters vs. Polynormer at 10⁶–10⁷</div>
       </div>
       <div class="rstat">
-        <div class="rstat-value">O(kn²)</div>
+        <div class="rstat-value">$O(kn²)$</div>
         <div class="rstat-label">Confirmed empirically on synthetic Barabási–Albert graphs</div>
       </div>
     </div>
