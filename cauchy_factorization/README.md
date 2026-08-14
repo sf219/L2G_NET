@@ -4,7 +4,7 @@ Standalone code for the recursive Cauchy factorization of graph Laplacian
 eigendecompositions (L2G-Net, arXiv:2602.18837). Factorization only — the
 HODLR fast matvec is a separate project and is not included.
 
-Pipeline: bisect (METIS or Fiedler fallback) → sparsify cut edges to
+Pipeline: bisect with METIS → sparsify cut edges to
 `target_cut` → eigendecompose parts recursively → reattach each kept edge as
 a rank-one secular update, stored as an implicit orthogonal Cauchy factor.
 The result is exact for the sparsified (effective) Laplacian.
@@ -26,9 +26,12 @@ decomp.memory_bytes()         # implicit storage
 ## Install
 
 ```bash
-pip install numpy scipy networkx numba threadpoolctl
-pip install pymetis   # optional; falls back to Fiedler bisection
+pip install numpy scipy networkx numba threadpoolctl pymetis
 ```
+
+pymetis is the default partitioner. Without it the code still runs via a
+Fiedler-bisection fallback (with a RuntimeWarning), but partitions can be
+badly unbalanced and benchmark numbers are not comparable.
 
 ## Benchmark
 

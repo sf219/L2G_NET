@@ -1,13 +1,15 @@
 """
 pymetis compatibility layer.
 
-If the real pymetis is installed it is used verbatim. Otherwise a pure
+pymetis is the default and expected partitioner (pip install pymetis; a
+prebuilt wheel exists for common platforms). If it is missing, a pure
 scipy fallback provides 2-way spectral (Fiedler-vector) bisection with the
-same `part_graph(nparts, adjacency=...)` interface. Partitions differ from
-METIS, so cut sizes (and therefore exact timings) are only reproducible
-across machines when pymetis is installed.
+same `part_graph(nparts, adjacency=...)` interface and a RuntimeWarning is
+emitted: fallback partitions can be badly unbalanced and results are not
+comparable to METIS-partitioned runs.
 """
 import types
+import warnings
 
 import numpy as np
 import scipy.sparse as sp
@@ -15,6 +17,12 @@ import scipy.sparse as sp
 try:
     import pymetis  # noqa: F401
 except ImportError:
+    warnings.warn(
+        "pymetis is not installed - falling back to spectral bisection. "
+        "Fallback partitions can be badly unbalanced (especially on "
+        "power-law graphs), inflating leaf eigendecomposition cost and "
+        "cut sizes. Install it with: pip install pymetis",
+        RuntimeWarning, stacklevel=2)
     def _part_graph(nparts, adjacency=None, **kwargs):
         n = len(adjacency)
         if adjacency is None or n == 0:
