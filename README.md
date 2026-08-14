@@ -20,8 +20,6 @@ flags, install, and validation details.
 
 [`l2g_net/`](l2g_net/) — train L2G-Net from an exported Cauchy factorization
 (notebook: [`L2G_Net_Minesweeper.ipynb`](l2g_net/L2G_Net_Minesweeper.ipynb)).
-Full 10-split Minesweeper through this pipeline: test ROC AUC 97.28 +/- 0.37
-(paper: 97.50 +/- 0.4).
 
 ## Runtime vs graph size (paper Fig. 3 setup)
 
