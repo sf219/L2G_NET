@@ -56,6 +56,10 @@ Flags: `--laplacian {comb,norm}`, `--depth`, `--target-cut`, `--n-grid`,
 `--sparsifier {ss,degree}` (`degree` avoids the CG solves of the
 effective-resistance sketch), `--n-sketches`. `--help` for the rest.
 
+Measured tables are in the top-level README. They were produced on a
+Xeon E5-2667 v4; the paper's experiments ran on an i9-9900K, so absolute
+times differ from the paper while the scaling exponents match.
+
 Output includes an itemized runtime (partition / sparsify / base_eig /
 secular / z_compute), memory vs dense eigenvectors, and validation against
 the effective Laplacian (eigenvalue error, orthogonality and eigen-residual

@@ -22,8 +22,7 @@ flags, install, and validation details.
 
 Cauchy factorization (CF) vs dense eigendecomposition (`numpy.linalg.eigh`).
 BA graphs, depth 2, k = 5, median of 3 runs; Xeon E5-2667 v4, 8 threads,
-pymetis. Scaling matches the paper (CF ~ n^2.0, ED ~ n^2.9); absolute times
-differ from the paper's i9-9900K.
+pymetis. Scaling matches the paper (CF ~ n^2.0, ED ~ n^2.9).
 
 | n | m | CF (s) | ED (s) | speedup | err_s |
 |---|---|---|---|---|---|
