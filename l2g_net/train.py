@@ -92,8 +92,8 @@ def plot_filter_evolution(model, step, run_id, save_dir='fig_dump'):
         ax.grid(True, alpha=0.3)
         ax.legend()
 
-    plot_part(axes[1], 'S', first_sgwt_layer.spectral_wavelet_filter_S, lam_S_normalized)
-    plot_part(axes[2], 'T', first_sgwt_layer.spectral_wavelet_filter_T, lam_T_normalized)
+    plot_part(axes[1], 'S', first_sgwt_layer.spectral_wavelet_filter_S, first_sgwt_layer.sc.lam_S_normalized)
+    plot_part(axes[2], 'T', first_sgwt_layer.spectral_wavelet_filter_T, first_sgwt_layer.sc.lam_T_normalized)
 
     plt.tight_layout()
     filename = os.path.join(save_dir, f'filters_run{run_id}_step{step:04d}.png')
@@ -105,7 +105,7 @@ class Model(nn.Module):
     def __init__(self, input_dim, hidden_dim, output_dim, module, hidden_dim_multiplier=1, num_heads=0,
                  dropout=0.2, inner_dropout=0.2, num_layers=2, share_filters=False, initial_step_global=0.03, 
                  initial_step_sides=0.12, num_filters_global=6, num_filters_S=6, num_filters_T=6, 
-                 initial_step_rmw=1.0, filter_init_mode='band_pass'):
+                 initial_step_rmw=1.0, filter_init_mode='band_pass', spectral=None):
         super().__init__()
         
         self.residual_modules = nn.ModuleList()
@@ -131,6 +131,7 @@ class Model(nn.Module):
                 shared_feedforward=shared_ff, 
                 initial_step_global=initial_step_global,
                 initial_step_sides=initial_step_sides,
+                spectral=spectral,
             )
             self.residual_modules.append(residual_module)
 
@@ -154,19 +155,6 @@ class Model(nn.Module):
 
         return x    
 
-U_eig = None
-eigvals = None
-lam_normalized = None
-lam_max = None
-basis_cauchy = None  # U_full^T @ blockdiag(U_S, U_T)
-U_S_local = None
-U_T_local = None
-eig_S_local = None
-eig_T_local = None
-lam_S_normalized = None
-lam_T_normalized = None
-idx_S_global = None
-idx_T_global = None
 
 import math
 
@@ -174,31 +162,27 @@ import torch
 import torch.nn.functional as F
 import math
 
-def load_spectral_components(path, device):
-    """Load the spectral tensors exported by export_factorization.py."""
-    global U_eig, eigvals, lam_max, lam_normalized, basis_cauchy
-    global U_S_local, U_T_local, eig_S_local, eig_T_local, lam_S_normalized, lam_T_normalized
-    global idx_S_global, idx_T_global
-    import numpy as np
-    d = np.load(path, allow_pickle=True)
-    t = lambda k: torch.from_numpy(np.ascontiguousarray(d[k])).float().to(device)
-    eigvals = t("eigvals")
-    lam_max = eigvals.max()
-    lam_normalized = eigvals / lam_max
-    basis_cauchy = t("basis_cauchy")
-    U_S_local = t("U_S")
-    U_T_local = t("U_T")
-    eig_S_local = t("eig_S")
-    eig_T_local = t("eig_T")
-    lam_S_normalized = eig_S_local / (eig_S_local.max() + 1e-9)
-    lam_T_normalized = eig_T_local / (eig_T_local.max() + 1e-9)
-    idx_S_global = torch.from_numpy(np.ascontiguousarray(d["idx_S"])).long().to(device)
-    idx_T_global = torch.from_numpy(np.ascontiguousarray(d["idx_T"])).long().to(device)
-    U_eig = basis_cauchy  # sentinel: spectral components are initialized
-    print(f"Loaded Cauchy factorization: {path} "
-          f"(n={basis_cauchy.shape[0]}, |S|={len(idx_S_global)}, "
-          f"|T|={len(idx_T_global)}, "
-          f"laplacian={d['laplacian']}, target_cut={int(d['target_cut'])})")
+class SpectralComponents:
+    """Spectral tensors exported by export_factorization.py."""
+    def __init__(self, path, device):
+        import numpy as np
+        d = np.load(path, allow_pickle=True)
+        t = lambda k: torch.from_numpy(np.ascontiguousarray(d[k])).float().to(device)
+        self.eigvals = t("eigvals")
+        self.lam_normalized = self.eigvals / self.eigvals.max()
+        self.basis_cauchy = t("basis_cauchy")
+        self.U_S = t("U_S")
+        self.U_T = t("U_T")
+        self.eig_S = t("eig_S")
+        self.eig_T = t("eig_T")
+        self.lam_S_normalized = self.eig_S / (self.eig_S.max() + 1e-9)
+        self.lam_T_normalized = self.eig_T / (self.eig_T.max() + 1e-9)
+        self.idx_S = torch.from_numpy(np.ascontiguousarray(d["idx_S"])).long().to(device)
+        self.idx_T = torch.from_numpy(np.ascontiguousarray(d["idx_T"])).long().to(device)
+        print(f"Loaded Cauchy factorization: {path} "
+              f"(n={self.basis_cauchy.shape[0]}, |S|={len(self.idx_S)}, "
+              f"|T|={len(self.idx_T)}, "
+              f"laplacian={d['laplacian']}, target_cut={int(d['target_cut'])})")
 
 class SpectralWaveletFilter(nn.Module):
     def __init__(self, in_features, num_scales, init_mode='low_pass'):
@@ -274,7 +258,7 @@ def apply_bank(x_hat_local, basis_local, filters):
 
 
 class SGWTModule(nn.Module):
-    def __init__(self, dim, hidden_dim_multiplier, dropout, inner_dropout, shared_filters, shared_feedforward, 
+    def __init__(self, dim, hidden_dim_multiplier, dropout, inner_dropout, shared_filters, shared_feedforward, spectral, 
                  initial_step_global, initial_step_sides, **kwargs):
         super().__init__()
         self.feed_forward_module = shared_feedforward
@@ -307,6 +291,7 @@ class SGWTModule(nn.Module):
             logit_global = math.log(initial_step_global / (1 - initial_step_global))              
             self._step_global_logit = nn.Parameter(torch.tensor(logit_global))  # sigmoid(-1) = 0.12            
         self.drop1 = nn.Dropout(p=inner_dropout)
+        self.sc = spectral
         self.act = nn.SiLU()
                 
     @property
@@ -324,15 +309,13 @@ class SGWTModule(nn.Module):
     def bootstrap_filters(self):
         """Initial basis computation (used only on first call for plotting/debug).
         During training, forward() recomputes bases with current knots."""
-        if lam_normalized is not None:
+        if self.sc is not None:
             self.B_global = self._compute_spline_basis_wrapper(
-                lam_normalized, K=self.number_of_filters)
-        if lam_S_normalized is not None:
+                self.sc.lam_normalized, K=self.number_of_filters)
             self.B_part['S'] = self._compute_spline_basis_wrapper(
-                lam_S_normalized, K=self.number_filters_S)
-        if lam_T_normalized is not None:
+                self.sc.lam_S_normalized, K=self.number_filters_S)
             self.B_part['T'] = self._compute_spline_basis_wrapper(
-                lam_T_normalized, K=self.number_filters_T)
+                self.sc.lam_T_normalized, K=self.number_filters_T)
         
     def _compute_spline_basis_wrapper(self, lam, K):
         """
@@ -386,27 +369,27 @@ class SGWTModule(nn.Module):
         return basis
     
     def forward(self, graph, x):
-        if U_eig is None:
-            raise RuntimeError("spectral components not loaded - "
-                               "call load_spectral_components() first")
+        if self.sc is None:
+            raise RuntimeError("no SpectralComponents - pass spectral= to Model")
         if self.B_global is None:
             self.bootstrap_filters()
 
         # Recompute bases with current learnable knots each forward pass
         B_global = self._compute_spline_basis_wrapper(
-            lam_normalized, K=self.number_of_filters)
+            self.sc.lam_normalized, K=self.number_of_filters)
         B_S = self._compute_spline_basis_wrapper(
-            lam_S_normalized, K=self.number_filters_S)
+            self.sc.lam_S_normalized, K=self.number_filters_S)
         B_T = self._compute_spline_basis_wrapper(
-            lam_T_normalized, K=self.number_filters_T)
+            self.sc.lam_T_normalized, K=self.number_filters_T)
 
         # 1) Partition the signal
-        x_S = x[idx_S_global]
-        x_T = x[idx_T_global]
+        sc = self.sc
+        x_S = x[sc.idx_S]
+        x_T = x[sc.idx_T]
 
         # 2) Transform to local spectral domains
-        x_S_hat = torch.matmul(U_S_local.T, x_S)
-        x_T_hat = torch.matmul(U_T_local.T, x_T)
+        x_S_hat = torch.matmul(sc.U_S.T, x_S)
+        x_T_hat = torch.matmul(sc.U_T.T, x_T)
 
         x_S_new = apply_bank(
             x_S_hat,
@@ -432,7 +415,7 @@ class SGWTModule(nn.Module):
         
         block_hat = torch.cat([scaled_S, scaled_T], dim=0)
         
-        x_global_hat = torch.matmul(basis_cauchy, block_hat)
+        x_global_hat = torch.matmul(sc.basis_cauchy, block_hat)
         
         x_new = apply_bank(
             x_global_hat,
@@ -441,10 +424,10 @@ class SGWTModule(nn.Module):
         )
         
         # Inverse transform
-        x_filt_1 = torch.matmul(basis_cauchy.T, x_new)
+        x_filt_1 = torch.matmul(sc.basis_cauchy.T, x_new)
         x_filtered = torch.zeros_like(x)
-        x_filtered[idx_S_global] = torch.matmul(U_S_local, x_filt_1[:len(idx_S_global)])
-        x_filtered[idx_T_global] = torch.matmul(U_T_local, x_filt_1[len(idx_S_global):])
+        x_filtered[sc.idx_S] = torch.matmul(sc.U_S, x_filt_1[:len(sc.idx_S)])
+        x_filtered[sc.idx_T] = torch.matmul(sc.U_T, x_filt_1[len(sc.idx_S):])
         x_filtered = self.drop1(x_filtered)
         if self.flag_direct_global is False:
             x_filtered = self.act(x_filtered) * self.step_global + x
@@ -467,7 +450,7 @@ def get_args():
     # model architecture
     parser.add_argument('--model', type=str, default='SGWT',
                         choices=['GCN', 'SGWT'])
-    parser.add_argument('--num_layers', type=int, default=16)
+    parser.add_argument('--num_layers', type=int, default=14)  # paper minesweeper config
     parser.add_argument('--hidden_dim', type=int, default=32)
     parser.add_argument('--hidden_dim_multiplier', type=float, default=1)
     parser.add_argument('--num_heads', type=int, default=8)
@@ -553,7 +536,7 @@ def main():
                       use_adjacency_features=args.use_adjacency_features,
                       do_not_use_original_features=args.do_not_use_original_features)
 
-    load_spectral_components(args.factorization, device=args.device)
+    spectral = SpectralComponents(args.factorization, device=args.device)
 
     logger = Logger(args, metric=dataset.metric, num_data_splits=dataset.num_data_splits)
 
@@ -575,7 +558,8 @@ def main():
             num_filters_global=args.filters_global,
             num_filters_S=args.filters_S,
             num_filters_T=args.filters_T, 
-            filter_init_mode=args.filter_init_mode
+            filter_init_mode=args.filter_init_mode,
+            spectral=spectral,
         )
 
         model.to(args.device)
@@ -621,7 +605,7 @@ def main():
                 if plot_filters_with_eigenvalues is not None and (
                         step % 200 == 0 or step == 1 or step == args.num_steps):
                     import numpy as np
-                    lam_plot = lam_normalized.cpu().numpy() if lam_normalized is not None else None
+                    lam_plot = spectral.lam_normalized.cpu().numpy()
                     lam_plot = lam_plot[:-2]
                     lam_plot = lam_plot / (lam_plot.max() * (1.05))
                     lam_plot = np.concatenate([lam_plot, [1.0]])  # ensure we see the endpoint
