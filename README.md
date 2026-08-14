@@ -33,3 +33,18 @@ pymetis. Scaling matches the paper (CF ~ n^2.0, ED ~ n^2.9).
 | 14000 | 41991 | 27.78 | 137.93 | 4.97x | 7.3e-11 |
 | 20000 | 59991 | 63.25 | 384.70 | 6.08x | 4.1e-11 |
 
+## Runtime vs cut size (paper Fig. 4 setup)
+
+CF runtime against the number of bridge edges k at fixed n = 8000 (BA
+graph, depth 2, median of 3 runs; same machine and settings as above).
+
+| k | CF (s) | err_s |
+|---|---|---|
+| 2 | 5.82 | 5.5e-12 |
+| 5 | 8.44 | 3.0e-11 |
+| 10 | 13.07 | 1.1e-10 |
+| 15 | 20.14 | 8.4e-10 |
+| 20 | 29.28 | 2.7e-10 |
+| 25 | 41.21 | 3.6e-10 |
+| 30 | 54.84 | 3.2e-10 |
+
