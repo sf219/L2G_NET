@@ -6,9 +6,9 @@
 
 ## Code
 
-[`cauchy_factorization/`](cauchy_factorization/) — standalone implementation
-of the recursive Cauchy factorization (combinatorial and normalized
-Laplacians), with a benchmark reproducing the paper's runtime experiments:
+[`cauchy_factorization/`](cauchy_factorization/) — implementation of the
+Cauchy factorization (combinatorial and normalized Laplacians), with a
+benchmark reproducing the paper's runtime experiments:
 
 ```bash
 OMP_NUM_THREADS=8 python -m cauchy_factorization.bench \
