@@ -16,4 +16,21 @@ OMP_NUM_THREADS=8 python -m cauchy_factorization.bench \
 ```
 
 See [`cauchy_factorization/README.md`](cauchy_factorization/README.md) for
-flags, measured tables, and validation details.
+flags, install, and validation details.
+
+## Runtime vs graph size (paper Fig. 3 setup)
+
+Cauchy factorization (CF) vs dense eigendecomposition (`numpy.linalg.eigh`).
+BA graphs, depth 2, k = 5, median of 3 runs; Xeon E5-2667 v4, 8 threads,
+pymetis. Scaling matches the paper (CF ~ n^2.0, ED ~ n^2.9); absolute times
+differ from the paper's i9-9900K.
+
+| n | m | CF (s) | ED (s) | speedup | err_s |
+|---|---|---|---|---|---|
+| 4000 | 11991 | 2.49 | 3.63 | 1.46x | 2.3e-11 |
+| 6000 | 17991 | 5.01 | 12.09 | 2.41x | 1.3e-11 |
+| 8000 | 23991 | 8.50 | 27.58 | 3.24x | 3.0e-11 |
+| 10000 | 29991 | 13.25 | 51.97 | 3.92x | 3.2e-10 |
+| 14000 | 41991 | 27.78 | 137.93 | 4.97x | 7.3e-11 |
+| 20000 | 59991 | 63.25 | 384.70 | 6.08x | 4.1e-11 |
+

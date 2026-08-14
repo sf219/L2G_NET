@@ -56,20 +56,6 @@ Flags: `--laplacian {comb,norm}`, `--depth`, `--target-cut`, `--n-grid`,
 `--sparsifier {ss,degree}` (`degree` avoids the CG solves of the
 effective-resistance sketch), `--n-sketches`. `--help` for the rest.
 
-Measured with the Fig. 3 command on a Xeon E5-2667 v4 (8 threads,
-pymetis, numpy 1.26 / OpenBLAS; the paper used an i9-9900K, so absolute
-times differ from the paper but the scaling matches: t_factor ~ n^2.0,
-t_eigh ~ n^2.9):
-
-| n | m | t_factor (s) | t_eigh (s) | speedup | err_s |
-|---|---|---|---|---|---|
-| 4000 | 11991 | 2.49 | 3.63 | 1.46x | 2.3e-11 |
-| 6000 | 17991 | 5.01 | 12.09 | 2.41x | 1.3e-11 |
-| 8000 | 23991 | 8.50 | 27.58 | 3.24x | 3.0e-11 |
-| 10000 | 29991 | 13.25 | 51.97 | 3.92x | 3.2e-10 |
-| 14000 | 41991 | 27.78 | 137.93 | 4.97x | 7.3e-11 |
-| 20000 | 59991 | 63.25 | 384.70 | 6.08x | 4.1e-11 |
-
 Output includes an itemized runtime (partition / sparsify / base_eig /
 secular / z_compute), memory vs dense eigenvectors, and validation against
 the effective Laplacian (eigenvalue error, orthogonality and eigen-residual
