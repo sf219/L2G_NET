@@ -1,2 +1,7 @@
 __pycache__/
 *.pyc
+l2g_net/data/
+l2g_net/*.npz
+l2g_net/experiments/
+l2g_net/fig_dump/
+l2g_net/checkpoints*/
