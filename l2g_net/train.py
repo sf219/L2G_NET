@@ -450,7 +450,7 @@ def get_args():
     # model architecture
     parser.add_argument('--model', type=str, default='SGWT',
                         choices=['GCN', 'SGWT'])
-    parser.add_argument('--num_layers', type=int, default=14)  # paper minesweeper config
+    parser.add_argument('--num_layers', type=int, default=16)
     parser.add_argument('--hidden_dim', type=int, default=32)
     parser.add_argument('--hidden_dim_multiplier', type=float, default=1)
     parser.add_argument('--num_heads', type=int, default=8)
